@@ -19,37 +19,33 @@ public class MesaDao implements Dao<Mesa>, DaoMesa {
         List<Mesa> collect = mesas.stream().filter(e -> Objects.equals(e.getNumeroMesa(), numeroMesa)).toList();
 
         if (collect.size() > 0) {
-
             return Optional.ofNullable(collect.get(0));
-
-        }else{
+        } else {
             return Optional.empty();
-
         }
 
+    }
+
+    @Override
+    public List<Mesa> getMesasCapacidade(int capacidadeMesa) {
+        List<Mesa> collect = mesas.stream().filter(e -> e.getCapacidadeMesa() >= capacidadeMesa).toList();
+        return  collect;
     }
 
     @Override
     public Optional<Mesa> getMesaCapacidade(int capacidadeMesa) {
+
         List<Mesa> collect = mesas.stream().filter(e -> Objects.equals(e.getCapacidadeMesa(), capacidadeMesa)).toList();
+
         if (collect.size() > 0) {
-
             return Optional.ofNullable(collect.get(0));
-
-        }else{
+        } else {
             return Optional.empty();
-
         }
     }
 
-
-
     @Override
-    public List<Mesa> getAll() {
-
-        return mesas;
-
-    }
+    public List<Mesa> getAll() {return mesas;}
 
     @Override
     public void update(Mesa mesa) {
@@ -61,14 +57,9 @@ public class MesaDao implements Dao<Mesa>, DaoMesa {
                 mesa.getCapacidadeMesa(), "Capacidade da mesa nao pode null"));
 
         mesas.add(mesa);
-
     }
 
     @Override
-    public void delete(Mesa mesa) {
-
-        mesas.remove(mesa);
-
-    }
+    public void delete(Mesa mesa) {mesas.remove(mesa);}
 
 }

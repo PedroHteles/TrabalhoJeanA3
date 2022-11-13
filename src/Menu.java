@@ -11,11 +11,12 @@ public class Menu {
                         + "2. Remoção de Mesa\n"
                         + "3. Busca Mesa pelo número\n"
                         + "4. Busca Mesa pela capacidade de clientes\n"
-                        + "5. Relatório de mesas (com todos os dados de todas as mesas)\n\n"
-                        + "6. Cadastro de Garçom\n"
-                        + "7. Remoção de Garçom\n"
-                        + "8. Busca Garçom pelo Email\n"
-                        + "9. Relatório de mesas (com todos os dados de todas as mesas)\n\n"
+                        + "5. Relatório de mesas (com todos os dados de todas as mesas)\n"
+                        + "6. Relatório de mesas (capacidade)\n"
+                        + "7. Cadastro de Garçom\n"
+                        + "8. Remoção de Garçom\n"
+                        + "9. Busca Garçom pelo Email\n"
+                        + "10. Relatório de mesas (com todos os dados de todas as mesas)\n\n"
                         + "0. Sair\n\n";
 
         System.out.println(menu);
@@ -132,6 +133,20 @@ public class Menu {
                     break;
                 }
                 case 6: {
+                    System.out.println("digite a capacidade da mesa: ");
+                    int capacidade = sc.nextInt();
+                    List<Mesa> relotorio = mesaDao.getMesasCapacidade(capacidade);
+                    for(Mesa a : relotorio){
+                        System.out.println(
+                                "quantidade de mesa: " + a.getNumeroMesa() +
+                                        " capacidade: " + a.getCapacidadeMesa() +
+                                        " situacao: " + a.getSituacao()
+                        );
+                    }
+                    System.out.println(5);
+                    break;
+                }
+                case 7: {
                     System.out.println("digite o nome do Garçom: ");
 
                     String nome = sc.next();
@@ -161,23 +176,58 @@ public class Menu {
                     Double salarioFixo  = sc.nextDouble();
 
                     garconDao.create(new Garcon(nome, cpf, dataNascimento, email, telefone, sexo, salarioFixo));
-                    System.out.println(5);
 
-                    break;
-                }
-                case 7: {
-
-                    System.out.println(5);
+                    System.out.println(garconDao.getAll());
 
                     break;
                 }
                 case 8: {
+                    System.out.println("digite o numero email do garcom: ");
 
+                    String emailGarcom = sc.next();
+
+                    Optional<Garcon> garcom = garconDao.getGarcom(emailGarcom);
+
+                    if (!garcom.isPresent()) {
+
+                        System.out.println("garcom nao encontrado(a)");
+
+                    }else {
+
+                        garconDao.delete(garcom.get());
+
+                    }
                     System.out.println(5);
 
                     break;
                 }
                 case 9: {
+                    System.out.println("digite o numero email do garcom: ");
+
+                    String emailGarcom = sc.next();
+
+                    Optional<Garcon> garcom = garconDao.getGarcom(emailGarcom);
+
+                    if (!garcom.isPresent()) {
+
+                        System.out.println("garcom nao encontrado(a)");
+
+                    }else {
+
+                        Garcon garcon = garcom.get();
+
+                        System.out.println(
+                                    "nome do garcom: " + garcon.getNome() +
+                                            " email do garcom: " + garcon.getEmail() +
+                                            " salario do garcom: " + garcon.getSalarioFixo()
+                        );
+
+                    }
+                    System.out.println(5);
+
+                    break;
+                }
+                case 10: {
 
                     System.out.println(5);
 
