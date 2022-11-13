@@ -4,26 +4,26 @@ public class Garcon {
 
     private String nome;
     private String cpf;
-    private LocalDate dataNascimento;
+    private String dataNascimento;
     private String email;
-    private Integer telefone;
+    private Long telefone;
     private String sexo;
-    private Double salario;
+    private Double salarioFixo;
 
     public Garcon(final String nome,
                   final String cpf,
-                  final LocalDate dataNascimento,
+                  final String dataNascimento,
                   final String email,
-                  final Integer telefone,
+                  final Long telefone,
                   final String sexo,
-                  final Double salario) {
+                  final Double salarioFixo) {
         this.nome = nome;
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
         this.email = email;
         this.telefone = telefone;
         this.sexo = sexo;
-        this.salario = salario;
+        this.salarioFixo = salarioFixo;
     }
 
     public String getNome() {
@@ -42,11 +42,11 @@ public class Garcon {
         this.cpf = cpf;
     }
 
-    public LocalDate getDataNascimento() {
+    public String getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(LocalDate dataNascimento) {
+    public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
@@ -58,11 +58,11 @@ public class Garcon {
         this.email = email;
     }
 
-    public Integer getTelefone() {
+    public Long getTelefone() {
         return telefone;
     }
 
-    public void setTelefone(Integer telefone) {
+    public void setTelefone(Long telefone) {
         this.telefone = telefone;
     }
 
@@ -74,11 +74,11 @@ public class Garcon {
         this.sexo = sexo;
     }
 
-    public Double getSalario() {
-        return salario;
+    public Double getSalarioFixo() {
+        return salarioFixo;
     }
 
-    public void setSalario(Double salario) {
-        this.salario = salario;
+    public void setSalarioFixo(Double salarioFixo) {
+        this.salarioFixo = salarioFixo;
     }
 }

@@ -33,7 +33,7 @@ public class GarconDao implements Dao<Garcon>, DaoGarcon {
                 garcon.getEmail(),
                 garcon.getTelefone(),
                 garcon.getSexo(),
-                garcon.getSalario()
+                garcon.getSalarioFixo()
         ));
     }
 
@@ -45,7 +45,7 @@ public class GarconDao implements Dao<Garcon>, DaoGarcon {
         garcon.setDataNascimento(garcon.getDataNascimento());
         garcon.setEmail(garcon.getEmail());
         garcon.setSexo(garcon.getSexo());
-        garcon.setSalario(garcon.getSalario());
+        garcon.setSalarioFixo(garcon.getSalarioFixo());
         garcon.setTelefone(garcon.getTelefone());
         garcons.add(garcon);
     }

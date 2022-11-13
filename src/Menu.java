@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -11,6 +12,10 @@ public class Menu {
                         + "3. Busca Mesa pelo número\n"
                         + "4. Busca Mesa pela capacidade de clientes\n"
                         + "5. Relatório de mesas (com todos os dados de todas as mesas)\n\n"
+                        + "6. Cadastro de Garçom\n"
+                        + "7. Remoção de Garçom\n"
+                        + "8. Busca Garçom pelo Email\n"
+                        + "9. Relatório de mesas (com todos os dados de todas as mesas)\n\n"
                         + "0. Sair\n\n";
 
         System.out.println(menu);
@@ -20,6 +25,8 @@ public class Menu {
         Scanner sc = new Scanner(System.in);
 
         MesaDao mesaDao = new MesaDao();
+
+        GarconDao garconDao = new GarconDao();
 
         int opcao = leOpcao.nextInt();
 
@@ -120,6 +127,58 @@ public class Menu {
                                         " situacao: " + a.getSituacao()
                         );
                     }
+                    System.out.println(5);
+
+                    break;
+                }
+                case 6: {
+                    System.out.println("digite o nome do Garçom: ");
+
+                    String nome = sc.next();
+
+                    System.out.println("digite o cpf do Garçom: ");
+
+                    String cpf = sc.next();
+
+                    System.out.println("digite a data de nascimento do Garçom: ");
+
+                    String dataNascimento = sc.next();
+
+                    System.out.println("digite o Email do Garçom: ");
+
+                    String email = sc.next();
+
+                    System.out.println("digite o telefone do Garçom: ");
+
+                    Long telefone = sc.nextLong();
+
+                    System.out.println("digite o sexo do Garçom: ");
+
+                    String sexo = sc.next();
+
+                    System.out.println("digite o salário fixo do Garçom: ");
+
+                    Double salarioFixo  = sc.nextDouble();
+
+                    garconDao.create(new Garcon(nome, cpf, dataNascimento, email, telefone, sexo, salarioFixo));
+                    System.out.println(5);
+
+                    break;
+                }
+                case 7: {
+
+                    System.out.println(5);
+
+                    break;
+                }
+                case 8: {
+
+                    System.out.println(5);
+
+                    break;
+                }
+                case 9: {
+
                     System.out.println(5);
 
                     break;
