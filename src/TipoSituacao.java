@@ -4,7 +4,16 @@ public enum TipoSituacao {
     OCUPADA("OCUPADA", (short) 2),
     RESERVADA("RESERVADA",(short) 3);
 
-    TipoSituacao(String descricao, short i) {
+    private final String descricao;
+    private final short value;
+    TipoSituacao(final String descricao,
+                 final short value) {
+        this.value = value;
+        this.descricao = descricao;
+    }
+
+    public String getValorString() {
+        return descricao;
     }
 
 }

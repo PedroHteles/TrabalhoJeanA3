@@ -1,21 +1,21 @@
 import java.util.Scanner;
 
 public class Menu {
-
     public static void main(String[] args) {
         String menu =
                 "\n\n1. Cadastro de Mesa\n"
-                        + "2. Remocao de Mesa\n"
-                        + "3. Busca Mesa pelo numero\n"
-                        + "4. Busca Mesa pela capacidade de clientes\n"
-                        + "5. Busca Mesa pela situacao\n"
-                        + "5. Relatorio de mesas (com todos os dados de todas as mesas)\n"
-                        + "6. Relatorio de mesas (capacidade)\n"
-                        + "7. Cadastro de Garcom\n"
-                        + "8. Remocao de Garçom\n"
-                        + "9. Busca Garcom pelo Email\n"
-                        + "10. Garcom Registra Mesa \n"
-                        + "11. Relatorio de mesas (com todos os dados de todas as mesas)\n\n"
+                        + "2. Remocao de mesa\n"
+                        + "3. Busca mesa pelo numero\n"
+                        + "4. Busca mesa pela capacidade de clientes\n"
+                        + "5. Busca mesa pela situacao\n"
+                        + "6. Relatorio de mesas (com todos os dados de todas as mesas)\n"
+                        + "7. Relatorio de mesas (capacidade)\n"
+                        + "8. Cadastro de garcom\n"
+                        + "9. Remocao de garcom\n"
+                        + "10. Busca garcom pelo email\n"
+                        + "11. Garcom registra mesa \n"
+                        + "12. Garcom registra mesa livre\n"
+                        + "13. Relatorio de mesas (com todos os dados de todas as mesas)\n\n"
                         + "0. Sair\n\n";
 
         System.out.println(menu);
@@ -36,7 +36,7 @@ public class Menu {
                     break;
                 }
                 case 3: {
-                    mesaDao.getMesaNumero().ifPresent(Menu::soutMesa);
+                    mesaDao.get().ifPresent(Menu::soutMesa);
                     break;
                 }
                 case 4: {
@@ -64,13 +64,16 @@ public class Menu {
                     break;
                 }
                 case 10: {
-                    garconDao.getGarcom().ifPresent(Menu::soutGarcom);
+                    garconDao.get().ifPresent(Menu::soutGarcom);
                     break;
                 }
                 case 11: {
-                    garconDao.getGarcom().ifPresent(mesaDao::registraGarcomMesa);
+                    garconDao.get().ifPresent(mesaDao::registraGarcomMesa);
                     mesaDao.getAll().forEach(Menu::soutMesa);
                     break;
+                }
+                case 12: {
+                    mesaDao.liberarMesa();
                 }
 
                 default: {
@@ -97,7 +100,8 @@ public class Menu {
         System.out.println(
                 "nome do garcom: " + garcon.getNome() +
                         " email do garcom: " + garcon.getEmail() +
-                        " salario do garcom: " + garcon.getSalarioFixo()
+                        " salario do garcom: " + garcon.getSalarioFixo()+
+                        " sexo do garcom: " + garcon.getSexo().getValorString()
         );
     }
 }

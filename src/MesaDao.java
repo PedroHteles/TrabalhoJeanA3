@@ -1,39 +1,20 @@
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-public class MesaDao implements Dao<Mesa>, DaoMesa {
+public class MesaDao extends CustomScanner implements Dao<Mesa>, DaoMesa {
 
     private ArrayList<Mesa> mesas = new ArrayList<>();
 
-    Scanner sc = new Scanner(System.in);
-
-    private Long ScannerGetMesasPeluNumero() {
-        System.out.println("digite o numero da mesa: ");
-        return sc.nextLong();
-    }
-
-    private int ScannerGetMesasPelaCapacidade() {
-        System.out.println("digite a capacidade da mesa: ");
-        return sc.nextInt();
-    }
-
-    private short ScannerGetSituacaoMesa() {
-        System.out.println("digite a situacao da mesa: ");
-        return sc.nextShort();
-    }
-
     @Override
     public void create() {
-        mesas.add(new Mesa(ScannerGetMesasPeluNumero(),
-                ScannerGetMesasPelaCapacidade(),
-                ScannerGetSituacaoMesa()));
+        mesas.add(new Mesa(scLong("numero","mesa"),
+                scInt("capacidade","Mesa"),
+                scShort("situacao","mesa")));
     }
 
     @Override
-    public Optional<Mesa> getMesaNumero() {
+    public Optional<Mesa> get() {
 
-        Long aLong = ScannerGetMesasPeluNumero();
+        final Long aLong = scLong("numero","mesa");
 
         Optional<Mesa> any = mesas.stream().filter(e -> Objects.equals(e.getNumeroMesa(),
                 aLong)).findAny();
@@ -45,22 +26,8 @@ public class MesaDao implements Dao<Mesa>, DaoMesa {
 
     @Override
     public List<Mesa> getMesasCapacidade() {
-        return mesas.stream().filter(e -> ScannerGetMesasPelaCapacidade() >= e.getCapacidadeMesa()).toList();
-    }
-
-    @Override
-    public Optional<Mesa> getMesaCapacidade() {
-
-        Optional<Mesa> collect = mesas.stream().filter(e -> Objects.equals(e.getCapacidadeMesa(),
-                ScannerGetMesasPelaCapacidade())).findAny();
-
-        if (collect.isEmpty()) System.out.println("mesa nao encontrada");
-        return collect;
-    }
-
-    @Override
-    public Optional<Mesa> verificaStatusMesaNumero(short TipoSituacao) {
-        return this.getMesaNumero().filter(value -> Objects.equals(value.getSituacao(), TipoSituacao));
+        final int valor = scInt("capacidade", "Mesa");
+        return mesas.stream().filter(e ->  valor >= e.getCapacidadeMesa()).toList();
     }
 
     public List<Mesa> getMesasSituacao(short TipoSituacao) {
@@ -68,12 +35,31 @@ public class MesaDao implements Dao<Mesa>, DaoMesa {
     }
 
     @Override
+    public Optional<Mesa> getMesaCapacidade() {
+        final int valor = scInt("capacidade", "Mesa");
+        Optional<Mesa> collect = mesas.stream().filter(e -> Objects.equals(e.getCapacidadeMesa(),
+                valor)).findAny();
+
+        if (collect.isEmpty()) System.out.println("mesa nao encontrada");
+        return collect;
+    }
+
+    @Override
+    public Optional<Mesa> verificaStatusMesaNumero(short TipoSituacao) {
+        return this.get().filter(value -> Objects.equals(value.getSituacao(), TipoSituacao));
+    }
+
+    @Override
     public void registraGarcomMesa(Garcon garcon) {
-
         this.verificaStatusMesaNumero((short) 1).ifPresent(e -> {
-            this.atualizaStatus(e, garcon, (short) 2);
+            e.setSituacao((short) 2);
+            e.setGarcon(garcon);
         });
+    }
 
+    @Override
+    public void liberarMesa() {
+        this.get().ifPresent(e -> e.setSituacao((short) 1));
     }
 
     @Override
@@ -81,16 +67,12 @@ public class MesaDao implements Dao<Mesa>, DaoMesa {
         return mesas;
     }
 
-    private void atualizaStatus(Mesa mesa, Garcon garcon, short status) {
-        mesa.setSituacao(status);
-        mesa.setGarcon(garcon);
-    }
-
     @Override
     public void delete() {
-        this.getMesaNumero().ifPresent(e -> {
+        this.get().ifPresent(e -> {
             mesas.remove(e);
             System.out.println("numero da mesa: " + e.getNumeroMesa() + " deletada");
         });
     }
+
 }

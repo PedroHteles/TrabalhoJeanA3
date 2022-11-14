@@ -8,15 +8,17 @@ public class Garcon {
     private String dataNascimento;
     private String email;
     private Long telefone;
-    private String sexo;
+    private TipoSexo sexo;
     private Double salarioFixo;
     private ArrayList<Mesa> listaMesas = new ArrayList<>();
+
+    public Garcon(){}
     public Garcon(final String nome,
                   final String cpf,
                   final String dataNascimento,
                   final String email,
                   final Long telefone,
-                  final String sexo,
+                  final TipoSexo sexo,
                   final Double salarioFixo) {
         this.nome = nome;
         this.cpf = cpf;
@@ -70,11 +72,11 @@ public class Garcon {
         this.telefone = telefone;
     }
 
-    public String getSexo() {
+    public TipoSexo getSexo() {
         return sexo;
     }
 
-    public void setSexo(String sexo) {
+    public void setSexo(TipoSexo sexo) {
         this.sexo = sexo;
     }
 
