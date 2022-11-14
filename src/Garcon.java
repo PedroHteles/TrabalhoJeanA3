@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Garcon {
 
@@ -9,7 +10,7 @@ public class Garcon {
     private Long telefone;
     private String sexo;
     private Double salarioFixo;
-
+    private ArrayList<Mesa> listaMesas = new ArrayList<>();
     public Garcon(final String nome,
                   final String cpf,
                   final String dataNascimento,
@@ -25,6 +26,9 @@ public class Garcon {
         this.sexo = sexo;
         this.salarioFixo = salarioFixo;
     }
+
+    public ArrayList<Mesa> getListaMesas() {return listaMesas;}
+    public void setMesa(Mesa mesa) {this.listaMesas.add(mesa);}
 
     public String getNome() {
         return nome;

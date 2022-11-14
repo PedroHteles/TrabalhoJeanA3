@@ -1,13 +1,24 @@
 public class Mesa {
     private Long numeroMesa;
     private Integer capacidadeMesa;
-    private TipoSituacaoMesa situacao;
+    private short situacao;
+    private Garcon garcon;
 
     public Mesa(final Long numeroMesa,
-                final Integer capacidadeMesa
+                final Integer capacidadeMesa,
+                final short situacao
                 ) {
+        this.situacao = situacao;
         this.numeroMesa = numeroMesa;
         this.capacidadeMesa = capacidadeMesa;
+    }
+
+    public Garcon getGarcon() {
+        return garcon;
+    }
+
+    public void setGarcon(Garcon garcon) {
+        this.garcon = garcon;
     }
 
     public Long getNumeroMesa() {
@@ -26,11 +37,9 @@ public class Mesa {
         this.capacidadeMesa = capacidadeMesa;
     }
 
-    public TipoSituacaoMesa getSituacao() {
+    public short getSituacao() {
         return situacao;
     }
 
-    public void setSituacao(TipoSituacaoMesa situacao) {
-        this.situacao = situacao;
-    }
+    public void  setSituacao(short situacao) {this.situacao = situacao;}
 }
