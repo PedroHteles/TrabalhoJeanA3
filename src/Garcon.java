@@ -11,7 +11,6 @@ public class Garcon {
     private TipoSexo sexo;
     private Double salarioFixo;
     private ArrayList<Mesa> listaMesas = new ArrayList<>();
-
     public Garcon(){}
     public Garcon(final String nome,
                   final String cpf,

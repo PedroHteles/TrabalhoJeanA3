@@ -7,7 +7,7 @@ public interface DaoMesa extends Dao<Mesa>{
     Optional<Mesa> getMesaCapacidade();
     Optional<Mesa> verificaStatusMesaNumero(short TipoSituacao);
     void registraGarcomMesa(Garcon garcon);
-    List<Mesa> getMesasSituacao(short TipoSituacao);
+    List<Mesa> getMesasSituacao();
     void liberarMesa();
 
 }

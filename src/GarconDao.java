@@ -12,7 +12,7 @@ public class GarconDao extends CustomScanner  implements Dao<Garcon>  {
     @Override
     public Optional<Garcon> get() {
 
-        String email = scString("Email", getClass().getSimpleName());
+        String email = scString("Digite o email do garcom:");
 
         Optional<Garcon> garcon = garcons.stream().filter(e -> Objects.equals(e.getEmail(),email)).findAny();
 
@@ -28,13 +28,13 @@ public class GarconDao extends CustomScanner  implements Dao<Garcon>  {
 
     @Override
     public void create() {
-        garcons.add(new Garcon(scString("nome","garcom"),
-                scString("cpf","garcom"),
-                scString("dataNascimento","garcom"),
-                scString("email","garcom"),
-                scLong("telefone","garcom"),
+        garcons.add(new Garcon(scString("Digite o nome do garcom:"),
+                scString("Digite o cpf garcom:"),
+                scString("Digite a data de nascimento do garcom:"),
+                scString("Digite o email do garcom:"),
+                scLong("Digite o telefone do garcom:"),
                 scStringMsgFull("digite 1 para masculino e 2 para feminino") == 1 ?  TipoSexo.MASCULINO : TipoSexo.FEMININO,
-                scDouble("salario fixo","garcom")
+                scDouble("Digite o salario do garcom:")
         ));
     }
 }
