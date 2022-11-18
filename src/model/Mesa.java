@@ -1,3 +1,5 @@
+package model;
+
 public class Mesa {
     private Long numeroMesa;
     private Integer capacidadeMesa;

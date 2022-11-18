@@ -1,6 +1,14 @@
+package repository.imp;
+
+import model.Garcon;
+import model.Mesa;
+import repository.DaoGarcon;
+import repository.DaoMesa;
+import utils.CustomScanner;
+
 import java.util.*;
 
-public class MesaDao extends CustomScanner implements Dao<Mesa>, DaoMesa {
+public class MesaDao extends CustomScanner implements DaoGarcon.Dao<Mesa>, DaoMesa {
 
     private ArrayList<Mesa> mesas = new ArrayList<>();
 
@@ -21,9 +29,9 @@ public class MesaDao extends CustomScanner implements Dao<Mesa>, DaoMesa {
                             capacidade,
                             situacao
                             ));
-                    if (mesas.size() > size) System.out.println("Mesa Cadastrada com sucesso");
+                    if (mesas.size() > size) System.out.println("model.Mesa Cadastrada com sucesso");
                 } else {
-                    System.out.println("Mesa ja cadastrada !!");
+                    System.out.println("model.Mesa ja cadastrada !!");
                 }
         }else{System.out.println("Valor invalido!! ");}
     }

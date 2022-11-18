@@ -1,3 +1,5 @@
+package constate;
+
 public enum TipoSexo {
 
     MASCULINO("MASCULINO",(short) 1),

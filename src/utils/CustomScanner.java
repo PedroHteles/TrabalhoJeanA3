@@ -1,3 +1,5 @@
+package utils;
+
 import java.util.Scanner;
 
 public class CustomScanner {
@@ -5,13 +7,11 @@ public class CustomScanner {
 
     public String scString(String msg) {
         Scanner sc = new Scanner(System.in);
-
         try {
             System.out.println(msg);
             return sc.next();
         } catch (Exception e) {
             System.out.println("Digite um valor valido !!");
-
             return this.scString(msg);
         }
     }

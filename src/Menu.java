@@ -1,9 +1,15 @@
+import model.Garcon;
+import model.Mesa;
+import repository.imp.GarconDao;
+import repository.imp.MesaDao;
+import utils.CustomScanner;
+
 import java.util.Scanner;
 
 public class Menu {
     public static void main(String[] args) {
         String menu =
-                "\n\n1. Cadastro de Mesa:\n"
+                "\n\n1. Cadastro de mesa:\n"
                         + "2. Remocao de mesa:\n"
                         + "3. Busca mesa pelo numero:\n"
                         + "4. Busca mesa pela capacidade de clientes:\n"
@@ -19,7 +25,6 @@ public class Menu {
                         + "0. Sair\n\n";
 
         System.out.println(menu);
-        Scanner leOpcao = new Scanner(System.in);
         MesaDao mesaDao = new MesaDao();
         GarconDao garconDao = new GarconDao();
 
@@ -27,7 +32,6 @@ public class Menu {
         CustomScanner sc = new CustomScanner();
         int opcao = sc.scInt("Digite uma opcao: ");
         while (opcao != 0) {
-
             switch (opcao) {
                 case 1: {
                     mesaDao.getAll().forEach(Menu::soutMesa);
@@ -78,10 +82,10 @@ public class Menu {
                 }
                 case 12: {
                     mesaDao.liberarMesa();
+                    break;
                 }
 
                 default: {
-
                     break;
                 }
             }

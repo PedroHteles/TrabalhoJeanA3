@@ -1,3 +1,7 @@
+package model;
+
+import constate.TipoSexo;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 

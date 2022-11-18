@@ -1,6 +1,13 @@
+package repository.imp;
+
+import constate.TipoSexo;
+import model.Garcon;
+
+import repository.DaoGarcon;
+import utils.CustomScanner;
 import java.util.*;
 
-public class GarconDao extends CustomScanner  implements Dao<Garcon>  {
+public class GarconDao extends CustomScanner implements DaoGarcon.Dao<Garcon> {
 
     private ArrayList<Garcon> garcons = new ArrayList<>();
 

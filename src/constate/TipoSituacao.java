@@ -1,3 +1,5 @@
+package constate;
+
 public enum TipoSituacao {
 
     LIVRE( "LIVRE", (short) 1 ),
