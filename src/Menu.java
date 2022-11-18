@@ -101,7 +101,7 @@ public class Menu {
                 "Numero da mesa: " + mesa.getNumeroMesa() + "\n" +
                         " capacidade: " + mesa.getCapacidadeMesa() + "\n" +
                         " situacao: " + (mesa.getSituacao()  == 1 ? "LIVRE" :mesa.getSituacao() == 2 ? "OCUPADA" : "RESERVADA") + "\n" +
-                        " garcom: " + mesa.getGarcon() + " \n"
+                        " garcom: " + mesa.getGarcon().getNome() + " \n"
         );
     }
 
