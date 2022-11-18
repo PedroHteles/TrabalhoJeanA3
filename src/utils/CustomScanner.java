@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class CustomScanner {
 
-
     public String scString(String msg) {
         Scanner sc = new Scanner(System.in);
         try {
@@ -37,7 +36,6 @@ public class CustomScanner {
             System.out.println("Digite um numero valido!!");
             return this.scShort(msg);
         }
-
     }
 
     public Double scDouble(String msg) {
@@ -49,7 +47,6 @@ public class CustomScanner {
             System.out.println("Digite um numero valido!!");
             return this.scDouble(msg);
         }
-
     }
 
     public int scInt(String nome) {
@@ -61,7 +58,6 @@ public class CustomScanner {
             System.out.println("Digite um numero valido!!");
             return this.scInt(nome);
         }
-
     }
 
     public Short scStringMsgFull(String msg) {

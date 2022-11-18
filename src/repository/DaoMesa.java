@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DaoMesa extends DaoGarcon.Dao<Mesa> {
-
     List<Mesa> getMesasCapacidade();
     Optional<Mesa> getMesaCapacidade();
     Optional<Mesa> verificaStatusMesaNumero(short TipoSituacao);

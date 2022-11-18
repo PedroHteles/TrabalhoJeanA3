@@ -8,9 +8,7 @@ import utils.CustomScanner;
 import java.util.*;
 
 public class GarconDao extends CustomScanner implements DaoGarcon.Dao<Garcon> {
-
     private ArrayList<Garcon> garcons = new ArrayList<>();
-
     @Override
     public List<Garcon> getAll() {
         return garcons;
@@ -18,13 +16,9 @@ public class GarconDao extends CustomScanner implements DaoGarcon.Dao<Garcon> {
 
     @Override
     public Optional<Garcon> get() {
-
         String email = scString("Digite o email do garcom:");
-
         Optional<Garcon> garcon = garcons.stream().filter(e -> Objects.equals(e.getEmail(),email)).findAny();
-
         if (garcon.isEmpty()) System.out.println("garcom nao encontrado");
-
         return garcon;
     }
 

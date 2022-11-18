@@ -14,12 +14,11 @@ public class MesaDao extends CustomScanner implements DaoGarcon.Dao<Mesa>, DaoMe
 
     @Override
     public void create() {
-        int size = mesas.size();
-        Long numeroMesa = scLong("Digite o numero da mesa");
 
+        int listaMesa = mesas.size();
+        Long numeroMesa = scLong("Digite o numero da mesa");
         Optional<Mesa> any = mesas.stream().filter(e -> Objects.equals(e.getNumeroMesa(),
                 numeroMesa)).findAny();
-
         int capacidade = scInt("Digite a capacidade de mesa:");
 
         Short situacao = scShort("Digite 1 para LIVRE, Digite 2 para OCUPADA, digite 3 para RESERVADA: ");
@@ -29,9 +28,9 @@ public class MesaDao extends CustomScanner implements DaoGarcon.Dao<Mesa>, DaoMe
                             capacidade,
                             situacao
                             ));
-                    if (mesas.size() > size) System.out.println("model.Mesa Cadastrada com sucesso");
+                    if (mesas.size() > listaMesa) System.out.println("Mesa Cadastrada com sucesso");
                 } else {
-                    System.out.println("model.Mesa ja cadastrada !!");
+                    System.out.println("Mesa ja cadastrada !!");
                 }
         }else{System.out.println("Valor invalido!! ");}
     }
