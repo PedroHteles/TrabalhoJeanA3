@@ -6,12 +6,12 @@ import model.Mesa;
 import java.util.List;
 import java.util.Optional;
 
-public interface DaoMesa extends DaoGarcon.Dao<Mesa> {
-    List<Mesa> getMesasCapacidade();
-    Optional<Mesa> getMesaCapacidade();
-    Optional<Mesa> verificaStatusMesaNumero(short TipoSituacao);
+public interface DaoMesa extends Dao<Mesa> {
+
     void registraGarcomMesa(Garcon garcon);
+    List<Mesa> getMesasCapacidade();
     List<Mesa> getMesasSituacao();
-    void liberarMesa();
+    List<Mesa> getMesasOcupadas();
+    List<Mesa> getMesasGarcom();
 
 }

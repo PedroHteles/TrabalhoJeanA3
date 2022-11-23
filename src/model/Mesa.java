@@ -1,14 +1,16 @@
 package model;
 
+import constate.TipoSituacao;
+
 public class Mesa {
     private Long numeroMesa;
     private Integer capacidadeMesa;
-    private short situacao;
+    private TipoSituacao situacao;
     private Garcon garcon;
 
     public Mesa(final Long numeroMesa,
                 final Integer capacidadeMesa,
-                final short situacao
+                final TipoSituacao situacao
                 ) {
         this.situacao = situacao;
         this.numeroMesa = numeroMesa;
@@ -39,9 +41,7 @@ public class Mesa {
         this.capacidadeMesa = capacidadeMesa;
     }
 
-    public short getSituacao() {
-        return situacao;
-    }
+    public TipoSituacao getSituacao() {return situacao;}
 
-    public void  setSituacao(short situacao) {this.situacao = situacao;}
+    public void  setSituacao(TipoSituacao situacao) {this.situacao = situacao;}
 }
