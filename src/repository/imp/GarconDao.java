@@ -21,7 +21,8 @@ public class GarconDao extends CustomScanner implements Dao<Garcon>, DaoGarcon {
 
     public Optional<Garcon> get(int value) {
 
-        String email = scString("Digite o email do garcom:");
+        String email = scString("Digite o email do garcom ou digite SAIR");
+        if(email.toUpperCase().equals("sair")) Optional.empty();
         Optional<Garcon> garcon = garcons.stream().filter(e -> Objects.equals(e.getEmail(), email)).findAny();
         if (garcon.isEmpty()) System.out.println("garcom nao encontrado");
         return garcon;
@@ -64,7 +65,7 @@ public class GarconDao extends CustomScanner implements Dao<Garcon>, DaoGarcon {
                     scString("Digite a data de nascimento do garcom:"),
                     email,
                     scLong("Digite o telefone do garcom:"),
-                    scStringMsgFull("digite 1 para masculino e 2 para feminino") == 1 ? TipoSexo.MASCULINO : TipoSexo.FEMININO,
+                    TipoSexo.getInstance(scShort("digite 1 para masculino e 2 para feminino")),
                     scDouble("Digite o salario do garcom:")
             ));
         }

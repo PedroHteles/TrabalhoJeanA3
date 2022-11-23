@@ -24,13 +24,11 @@ public enum TipoSituacao  {
 
 
     public String getDescricao() {
-
         return this.descricao;
     }
 
 
     public Short getValor() {
-
         return this.valor;
     }
 

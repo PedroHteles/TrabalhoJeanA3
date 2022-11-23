@@ -17,7 +17,8 @@ public class MesaDao extends CustomScanner implements Dao<Mesa>, DaoMesa {
     public void create() {
 
         int listaMesa = mesas.size();
-        Long numeroMesa = scLong("Digite o numero da mesa");
+        Long numeroMesa = scLong("Digite o numero da mesa ou digite 0 para voltar ao menu:");
+        if (numeroMesa == 0) return;
 
         Optional<Mesa> any = mesas.stream()
                 .filter(e -> Objects.equals(e.getNumeroMesa(), numeroMesa)).findAny();

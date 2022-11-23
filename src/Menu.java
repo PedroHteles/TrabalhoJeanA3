@@ -1,16 +1,14 @@
-import constate.TipoSituacao;
 import model.Garcon;
 import model.Mesa;
 import repository.imp.GarconDao;
 import repository.imp.MesaDao;
 import utils.CustomScanner;
 
-import java.util.Scanner;
 
 public class Menu {
     public static void main(String[] args) {
         String menu =
-                      "\n\n1. Cadastro de mesa:\n"
+                "\n\n1. Cadastro de mesa:\n"
                         + "2. Remocao de mesa:\n"
                         + "3. Busca mesa pelo numero:\n"
                         + "4. Cadastro de garcom:\n"
@@ -29,68 +27,41 @@ public class Menu {
         MesaDao mesaDao = new MesaDao();
         GarconDao garconDao = new GarconDao();
         CustomScanner sc = new CustomScanner();
+        int opcao = sc.scInt("Digite uma opcao:");
 
-        int opcao = sc.scInt("Digite uma opcao: ");
         while (opcao != 0) {
             switch (opcao) {
-                case 1: {
+                case 1 -> {
                     mesaDao.getAll().forEach(Menu::soutMesa);
                     mesaDao.create();
-                    break;
                 }
-                case 2: {
+                case 2 -> {
                     mesaDao.getAll().forEach(Menu::soutMesa);
                     mesaDao.delete();
-                    break;
                 }
-                case 3:{
-                    mesaDao.get(0).ifPresent(Menu::soutMesa);
-                    break;
-                }
-                case 4: {
-                    garconDao.create();
-                    break;
-                }
-                case 5: {
-                    garconDao.delete();
-                    break;
-                }
-                case 6: {
-                    garconDao.get(0).ifPresent(Menu::soutGarcom);
-                    break;
-                }
-                case 7: {
+                case 3 -> mesaDao.get(0).ifPresent(Menu::soutMesa);
+
+                case 4 -> garconDao.create();
+
+                case 5 -> garconDao.delete();
+
+                case 6 -> garconDao.get(0).ifPresent(Menu::soutGarcom);
+
+                case 7 -> {
                     garconDao.get(0).ifPresent(mesaDao::registraGarcomMesa);
                     mesaDao.getAll().forEach(Menu::soutMesa);
-                    break;
                 }
-                case 8: {
-                    mesaDao.update((short) 4);
-                    break;
-                }
-                case 9: {
-                    mesaDao.getAll().forEach(Menu::soutMesa);
-                    break;
-                }
-                case 10: {
-                    garconDao.getAll().forEach(Menu::soutGarcom);
-                    break;
-                }
-                case 11: {
-                    mesaDao.getMesasCapacidade().forEach(Menu::soutMesa);
-                    break;
-                }
-                case 12: {
-                    mesaDao.getMesasSituacao().forEach(Menu::soutMesa);
-                    break;
-                }
-                case 13: {
-                    mesaDao.getMesasGarcom().forEach(Menu::soutMesa);
-                    break;
-                }
-                default: {
-                    break;
-                }
+                case 8 -> mesaDao.update((short) 4);
+
+                case 9 -> mesaDao.getAll().forEach(Menu::soutMesa);
+
+                case 10 -> garconDao.getAll().forEach(Menu::soutGarcom);
+
+                case 11 -> mesaDao.getMesasCapacidade().forEach(Menu::soutMesa);
+
+                case 12 -> mesaDao.getMesasSituacao().forEach(Menu::soutMesa);
+
+                case 13 -> mesaDao.getMesasGarcom().forEach(Menu::soutMesa);
             }
             System.out.println(menu);
             opcao = sc.scInt("Digite uma opcao: ");
@@ -113,7 +84,7 @@ public class Menu {
                 "nome do garcom: " + garcon.getNome() + "\n" +
                         " email do garcom: " + garcon.getEmail() + "\n" +
                         " salario do garcom: " + garcon.getSalarioFixo() + "\n" +
-                        " sexo do garcom: " + garcon.getSexo().getValorString() + " \n\n"
+                        " sexo do garcom: " + garcon.getSexo().getDescricao() + " \n\n"
         );
     }
 }
