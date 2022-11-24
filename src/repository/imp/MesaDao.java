@@ -110,13 +110,13 @@ public class MesaDao extends CustomScanner implements Dao<Mesa>, DaoMesa {
         Optional<Mesa> mesa = this.get((short) 0);
         if (mesa.isPresent()) {
             Optional<Mesa> mesaLivre = mesa.filter(value -> Objects.equals(value.getSituacao().getValor(), TipoSituacao.LIVRE));
-            if (!mesaLivre.isPresent()) {
+            if (mesaLivre.isPresent()) {
                 System.out.println("Mesa indisponivel no momento");
             } else {
-                mesa.ifPresent(e -> {
-                    e.setSituacao(TipoSituacao.OCUPADA);
-                    e.setGarcom(garcom);
-                });
+                Mesa mesaSelecionada = mesa.get();
+                mesaSelecionada.setSituacao(TipoSituacao.OCUPADA);
+                mesaSelecionada.setGarcom(garcom);
+                garcom.setMesa(mesa.get());
             }
         }
     }
