@@ -92,7 +92,7 @@ public class MesaDao extends CustomScanner implements Dao<Mesa>, DaoMesa {
     }
 
     public List<Mesa> getMesasSituacao() {
-        final Long tipoSituacao = scLong("Digite o numero da mesa a ser deletada: ");
+        final short tipoSituacao = scShort("Digite 1 para LIVRE, Digite 2 para OCUPADA, digite 3 para RESERVADA: ");
         return this.getAll().stream().filter(e -> Objects.equals(e.getSituacao().getValor(), tipoSituacao)).toList();
     }
 
@@ -111,7 +111,7 @@ public class MesaDao extends CustomScanner implements Dao<Mesa>, DaoMesa {
         if (mesa.isPresent()) {
             Optional<Mesa> mesaLivre = mesa.filter(value -> Objects.equals(value.getSituacao().getValor(), TipoSituacao.LIVRE));
             if (mesaLivre.isPresent()) {
-                System.out.println("Mesa indisponivel no momento: ");
+                System.out.println("Mesa " + mesa.get().getNumeroMesa() + " indisponivel no momento!");
             } else {
                 Mesa mesaSelecionada = mesa.get();
                 mesaSelecionada.setSituacao(TipoSituacao.OCUPADA);
