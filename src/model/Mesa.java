@@ -8,6 +8,7 @@ public class Mesa {
     private TipoSituacao situacao;
     private Garcom garcom;
 
+    public Mesa(){}
     public Mesa(final Long numeroMesa,
                 final Integer capacidadeMesa,
                 final TipoSituacao situacao

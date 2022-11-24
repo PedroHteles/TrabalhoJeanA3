@@ -20,7 +20,6 @@ public class GarcomDao extends CustomScanner implements Dao<Garcom>, DaoGarcom {
 
 
     public Optional<Garcom> get(int value) {
-
         String email = scString("Digite o email do garcom ou digite SAIR");
         if(email.toUpperCase().equals("sair")) Optional.empty();
         Optional<Garcom> garcon = garcons.stream().filter(e -> Objects.equals(e.getEmail(), email)).findAny();
@@ -32,14 +31,9 @@ public class GarcomDao extends CustomScanner implements Dao<Garcom>, DaoGarcom {
     public void update(int value) {
         this.get(0).ifPresent(e -> {
             switch (value) {
-                case 1: {
-                    e.setEmail(scString("Digite um novo email: "));
-                }
-                case 2: {
-                    e.setSalarioFixo(scDouble("Digite o novo salario: "));
-                }
+                case 1 -> e.setEmail(scString("Digite um novo email: "));
+                case 2 -> e.setSalarioFixo(scDouble("Digite o novo salario: "));
             }
-            garcons.add(e);
         });
     }
 
@@ -59,6 +53,9 @@ public class GarcomDao extends CustomScanner implements Dao<Garcom>, DaoGarcom {
         List<Garcom> all = this.getAll();
         if (all.size() > 0 && all.stream().filter(e -> e.getCpf().equals(cpf)).toList().size() > 0) {
             System.out.println("cpf ja foi registrado");
+        }
+        if (all.size() > 0 && all.stream().filter(e -> e.getEmail().equalsIgnoreCase(cpf)).toList().size() > 0) {
+            System.out.println("email ja foi registrado");
         } else {
             garcons.add(new Garcom(nome,
                     cpf,
@@ -70,5 +67,4 @@ public class GarcomDao extends CustomScanner implements Dao<Garcom>, DaoGarcom {
             ));
         }
     }
-
 }

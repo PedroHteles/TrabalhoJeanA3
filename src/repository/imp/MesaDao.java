@@ -49,23 +49,18 @@ public class MesaDao extends CustomScanner implements Dao<Mesa>, DaoMesa {
 
     @Override
     public Optional<Mesa> get(int value) {
-        switch (value) {
-            case 1: {
-                final Long aLong = scLong("Digite o numero da mesa a ser deletada ou digite 0 para voltar ao menu:");
-                if (aLong == 0) return Optional.empty();
-                Optional<Mesa> any = mesas.stream().filter(e -> Objects.equals(e.getNumeroMesa(), aLong)).findAny();
-
-                if (any.isEmpty()) System.out.println("mesa nao encontrada");
-                return any;
-            }
-            default: {
-                final Long aLong = scLong("Digite o numero da mesa: ");
-                Optional<Mesa> any = mesas.stream()
-                        .filter(e -> Objects.equals(e.getNumeroMesa(), aLong)).findAny();
-                if (any.isEmpty()) System.out.println("mesa nao encontrada");
-                return any;
-            }
+        if (value == 1) {
+            final Long aLong = scLong("Digite o numero da mesa a ser deletada ou digite 0 para voltar ao menu:");
+            if (aLong == 0) return Optional.empty();
+            Optional<Mesa> any = mesas.stream().filter(e -> Objects.equals(e.getNumeroMesa(), aLong)).findAny();
+            if (any.isEmpty()) System.out.println("mesa nao encontrada");
+            return any;
         }
+        final Long aLong = scLong("Digite o numero da mesa: ");
+        Optional<Mesa> any = mesas.stream()
+                .filter(e -> Objects.equals(e.getNumeroMesa(), aLong)).findAny();
+        if (any.isEmpty()) System.out.println("mesa nao encontrada");
+        return any;
 
     }
 
@@ -74,14 +69,10 @@ public class MesaDao extends CustomScanner implements Dao<Mesa>, DaoMesa {
         this.get((short) 0).ifPresent(e -> {
             switch (value) {
                 case 1 -> e.setCapacidadeMesa(scInt("Digite uma nova capacidade: "));
-
                 case 2 -> e.setSituacao(TipoSituacao.getInstance(scShort("Digite 1 para LIVRE, Digite 2 para OCUPADA, digite 3 para RESERVADA: ")));
-
                 case 3 -> e.setNumeroMesa(scLong("Digite um novo numero para a mesa: "));
-
-                case 4 -> e.setSituacao(TipoSituacao.LIVRE);
+                case 4 -> { e.setSituacao(TipoSituacao.LIVRE);  e.setGarcom(null); }
             }
-            mesas.add(e);
         });
     }
 
@@ -116,14 +107,18 @@ public class MesaDao extends CustomScanner implements Dao<Mesa>, DaoMesa {
 
     @Override
     public void registraGarcomMesa(Garcom garcom) {
-        this.verificaStatusMesa((short) 1)
-                .ifPresent(e -> {
+        Optional<Mesa> mesa = this.get((short) 0);
+        if (mesa.isPresent()) {
+            Optional<Mesa> mesaLivre = mesa.filter(value -> Objects.equals(value.getSituacao().getValor(), TipoSituacao.LIVRE));
+            if (!mesaLivre.isPresent()) {
+                System.out.println("Mesa indisponivel no momento");
+            } else {
+                mesa.ifPresent(e -> {
                     e.setSituacao(TipoSituacao.OCUPADA);
                     e.setGarcom(garcom);
                 });
+            }
+        }
     }
 
-    private Optional<Mesa> verificaStatusMesa(short tipoS) {
-        return this.get((short) 0).filter(value -> Objects.equals(value.getSituacao().getValor(), tipoS));
-    }
 }

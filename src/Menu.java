@@ -82,9 +82,12 @@ public class Menu {
     public static void soutGarcom(Garcom garcom) {
         System.out.println(
                 "nome do garcom: " + garcom.getNome() + "\n" +
-                        " email do garcom: " + garcom.getEmail() + "\n" +
-                        " salario do garcom: " + garcom.getSalarioFixo() + "\n" +
-                        " sexo do garcom: " + garcom.getSexo().getDescricao() + " \n\n"
+                        "email do garcom: " + garcom.getEmail() + "\n" +
+                        "cpf do garcom: " + garcom.getCpf() + "\n" +
+                        "data de nascimento do garcom: " + garcom.getDataNascimento() + "\n" +
+                        "total de mesas atendidas no momento: " + garcom.getListaMesas().size() + "\n" +
+                        "telefone do garcom: " + garcom.getTelefone() + "\n" +
+                        "sexo : " + garcom.getSexo().getDescricao() + " \n\n"
         );
     }
 }
