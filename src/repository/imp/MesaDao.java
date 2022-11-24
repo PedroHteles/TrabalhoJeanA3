@@ -1,7 +1,7 @@
 package repository.imp;
 
 import constate.TipoSituacao;
-import model.Garcon;
+import model.Garcom;
 import model.Mesa;
 import repository.Dao;
 import repository.DaoMesa;
@@ -107,7 +107,7 @@ public class MesaDao extends CustomScanner implements Dao<Mesa>, DaoMesa {
 
 
     public List<Mesa> getMesasGarcom() {
-        return this.getAll().stream().filter(e -> e.getGarcon() != null).toList();
+        return this.getAll().stream().filter(e -> e.getGarcom() != null).toList();
     }
 
     public List<Mesa> getMesasOcupadas() {
@@ -115,11 +115,11 @@ public class MesaDao extends CustomScanner implements Dao<Mesa>, DaoMesa {
     }
 
     @Override
-    public void registraGarcomMesa(Garcon garcon) {
+    public void registraGarcomMesa(Garcom garcom) {
         this.verificaStatusMesa((short) 1)
                 .ifPresent(e -> {
                     e.setSituacao(TipoSituacao.OCUPADA);
-                    e.setGarcon(garcon);
+                    e.setGarcom(garcom);
                 });
     }
 

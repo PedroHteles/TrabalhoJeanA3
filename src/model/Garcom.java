@@ -2,10 +2,9 @@ package model;
 
 import constate.TipoSexo;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Garcon {
+public class Garcom {
 
     private String nome;
     private String cpf;
@@ -15,8 +14,8 @@ public class Garcon {
     private TipoSexo sexo;
     private Double salarioFixo;
     private ArrayList<Mesa> listaMesas = new ArrayList<>();
-    public Garcon(){}
-    public Garcon(final String nome,
+    public Garcom(){}
+    public Garcom(final String nome,
                   final String cpf,
                   final String dataNascimento,
                   final String email,

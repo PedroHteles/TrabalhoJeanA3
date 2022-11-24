@@ -6,7 +6,7 @@ public class Mesa {
     private Long numeroMesa;
     private Integer capacidadeMesa;
     private TipoSituacao situacao;
-    private Garcon garcon;
+    private Garcom garcom;
 
     public Mesa(final Long numeroMesa,
                 final Integer capacidadeMesa,
@@ -17,12 +17,12 @@ public class Mesa {
         this.capacidadeMesa = capacidadeMesa;
     }
 
-    public Garcon getGarcon() {
-        return garcon;
+    public Garcom getGarcom() {
+        return garcom;
     }
 
-    public void setGarcon(Garcon garcon) {
-        this.garcon = garcon;
+    public void setGarcom(Garcom garcom) {
+        this.garcom = garcom;
     }
 
     public Long getNumeroMesa() {

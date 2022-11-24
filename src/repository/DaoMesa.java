@@ -1,6 +1,6 @@
 package repository;
 
-import model.Garcon;
+import model.Garcom;
 import model.Mesa;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface DaoMesa extends Dao<Mesa> {
 
-    void registraGarcomMesa(Garcon garcon);
+    void registraGarcomMesa(Garcom garcom);
     List<Mesa> getMesasCapacidade();
     List<Mesa> getMesasSituacao();
     List<Mesa> getMesasOcupadas();

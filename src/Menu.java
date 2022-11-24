@@ -1,6 +1,6 @@
-import model.Garcon;
+import model.Garcom;
 import model.Mesa;
-import repository.imp.GarconDao;
+import repository.imp.GarcomDao;
 import repository.imp.MesaDao;
 import utils.CustomScanner;
 
@@ -25,7 +25,7 @@ public class Menu {
 
         System.out.println(menu);
         MesaDao mesaDao = new MesaDao();
-        GarconDao garconDao = new GarconDao();
+        GarcomDao garcomDao = new GarcomDao();
         CustomScanner sc = new CustomScanner();
         int opcao = sc.scInt("Digite uma opcao:");
 
@@ -41,21 +41,21 @@ public class Menu {
                 }
                 case 3 -> mesaDao.get(0).ifPresent(Menu::soutMesa);
 
-                case 4 -> garconDao.create();
+                case 4 -> garcomDao.create();
 
-                case 5 -> garconDao.delete();
+                case 5 -> garcomDao.delete();
 
-                case 6 -> garconDao.get(0).ifPresent(Menu::soutGarcom);
+                case 6 -> garcomDao.get(0).ifPresent(Menu::soutGarcom);
 
                 case 7 -> {
-                    garconDao.get(0).ifPresent(mesaDao::registraGarcomMesa);
+                    garcomDao.get(0).ifPresent(mesaDao::registraGarcomMesa);
                     mesaDao.getAll().forEach(Menu::soutMesa);
                 }
                 case 8 -> mesaDao.update((short) 4);
 
                 case 9 -> mesaDao.getAll().forEach(Menu::soutMesa);
 
-                case 10 -> garconDao.getAll().forEach(Menu::soutGarcom);
+                case 10 -> garcomDao.getAll().forEach(Menu::soutGarcom);
 
                 case 11 -> mesaDao.getMesasCapacidade().forEach(Menu::soutMesa);
 
@@ -75,16 +75,16 @@ public class Menu {
                 "Numero da mesa: " + mesa.getNumeroMesa() + "\n" +
                         " capacidade: " + mesa.getCapacidadeMesa() + "\n" +
                         " situacao: " + mesa.getSituacao().getDescricao() + "\n" +
-                        " garcom: " + ((mesa.getGarcon() != null) ? mesa.getGarcon().getNome() : "Mesa sem nenhum garcon no momento") + " \n"
+                        " garcom: " + ((mesa.getGarcom() != null) ? mesa.getGarcom().getNome() : "Mesa sem nenhum garcom no momento") + " \n"
         );
     }
 
-    public static void soutGarcom(Garcon garcon) {
+    public static void soutGarcom(Garcom garcom) {
         System.out.println(
-                "nome do garcom: " + garcon.getNome() + "\n" +
-                        " email do garcom: " + garcon.getEmail() + "\n" +
-                        " salario do garcom: " + garcon.getSalarioFixo() + "\n" +
-                        " sexo do garcom: " + garcon.getSexo().getDescricao() + " \n\n"
+                "nome do garcom: " + garcom.getNome() + "\n" +
+                        " email do garcom: " + garcom.getEmail() + "\n" +
+                        " salario do garcom: " + garcom.getSalarioFixo() + "\n" +
+                        " sexo do garcom: " + garcom.getSexo().getDescricao() + " \n\n"
         );
     }
 }

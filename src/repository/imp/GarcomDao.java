@@ -1,29 +1,29 @@
 package repository.imp;
 
 import constate.TipoSexo;
-import model.Garcon;
+import model.Garcom;
 
 import repository.Dao;
-import repository.DaoGarcon;
+import repository.DaoGarcom;
 import utils.CustomScanner;
 
 import java.util.*;
 
-public class GarconDao extends CustomScanner implements Dao<Garcon>, DaoGarcon {
+public class GarcomDao extends CustomScanner implements Dao<Garcom>, DaoGarcom {
 
-    private ArrayList<Garcon> garcons = new ArrayList<>();
+    private ArrayList<Garcom> garcons = new ArrayList<>();
 
     @Override
-    public List<Garcon> getAll() {
+    public List<Garcom> getAll() {
         return garcons;
     }
 
 
-    public Optional<Garcon> get(int value) {
+    public Optional<Garcom> get(int value) {
 
         String email = scString("Digite o email do garcom ou digite SAIR");
         if(email.toUpperCase().equals("sair")) Optional.empty();
-        Optional<Garcon> garcon = garcons.stream().filter(e -> Objects.equals(e.getEmail(), email)).findAny();
+        Optional<Garcom> garcon = garcons.stream().filter(e -> Objects.equals(e.getEmail(), email)).findAny();
         if (garcon.isEmpty()) System.out.println("garcom nao encontrado");
         return garcon;
     }
@@ -56,11 +56,11 @@ public class GarconDao extends CustomScanner implements Dao<Garcon>, DaoGarcon {
         String nome = scString("Digite o nome do garcom:");
         String email = scString("Digite o email do garcom:");
         String cpf = scString("Digite o cpf garcom:");
-        List<Garcon> all = this.getAll();
+        List<Garcom> all = this.getAll();
         if (all.size() > 0 && all.stream().filter(e -> e.getCpf().equals(cpf)).toList().size() > 0) {
             System.out.println("cpf ja foi registrado");
         } else {
-            garcons.add(new Garcon(nome,
+            garcons.add(new Garcom(nome,
                     cpf,
                     scString("Digite a data de nascimento do garcom:"),
                     email,
