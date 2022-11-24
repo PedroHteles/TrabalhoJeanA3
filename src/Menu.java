@@ -87,6 +87,7 @@ public class Menu {
                         "data de nascimento do garcom: " + garcom.getDataNascimento() + "\n" +
                         "total de mesas atendidas no momento: " + garcom.getListaMesas().size() + "\n" +
                         "telefone do garcom: " + garcom.getTelefone() + "\n" +
+                        "salario do garcom: " + garcom.getSalarioFixo() + "\n" +
                         "sexo : " + garcom.getSexo().getDescricao() + " \n\n"
         );
     }
