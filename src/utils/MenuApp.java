@@ -4,12 +4,13 @@ import model.Garcom;
 import model.Mesa;
 import repository.imp.GarcomDao;
 import repository.imp.MesaDao;
+
 import java.util.Optional;
 
 
 public class MenuApp extends CustomScanner {
-    public void MenuApp(){
-         final String menu =
+    public void MenuApp() {
+        final String menu =
                 "\n\n1. Cadastro de mesa:\n"
                         + "2. Remocao de mesa:\n"
                         + "3. Busca mesa pelo numero:\n"
@@ -24,13 +25,13 @@ public class MenuApp extends CustomScanner {
                         + "12.Relatorio de mesas(situacao):\n"
                         + "13.Relatorio de mesas atendidas:\n"
                         + "0. Sair:\n\n";
+
         System.out.println(menu);
         MesaDao mesaDao = new MesaDao();
         GarcomDao garcomDao = new GarcomDao();
         int opcao = scInt("Digite uma opcao:");
 
-        while(opcao !=0)
-        {
+        while (opcao != 0) {
             switch (opcao) {
                 case 1 -> {
                     mesaDao.getAll().forEach(this::soutMesa);
@@ -38,7 +39,7 @@ public class MenuApp extends CustomScanner {
                     if (garcom.isPresent()) {
                         mesaDao.create(garcom.get());
                     } else {
-                        System.out.println("Sistema deve cadastrar ao menos 1 G A R C O M");
+                        System.out.println("Sistema deve cadastrar ao menos um GARCOM");
                     }
                 }
                 case 2 -> {
@@ -75,7 +76,8 @@ public class MenuApp extends CustomScanner {
 
 
     }
-    private  void soutMesa(Mesa mesa) {
+
+    private void soutMesa(Mesa mesa) {
         System.out.println("Mesas cadastradas:" + " \n");
         System.out.println(
                 "Numero da mesa: " + mesa.getNumeroMesa() + "\n" +
@@ -85,7 +87,7 @@ public class MenuApp extends CustomScanner {
         );
     }
 
-    private  void soutGarcom(Garcom garcom) {
+    private void soutGarcom(Garcom garcom) {
         System.out.println(
                 "nome do garcom: " + garcom.getNome() + "\n" +
                         "email do garcom: " + garcom.getEmail() + "\n" +
