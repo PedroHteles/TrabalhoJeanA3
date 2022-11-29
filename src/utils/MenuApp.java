@@ -1,15 +1,15 @@
+package utils;
+
 import model.Garcom;
 import model.Mesa;
 import repository.imp.GarcomDao;
 import repository.imp.MesaDao;
-import utils.CustomScanner;
-
 import java.util.Optional;
 
 
-public class Menu {
-    public static void main(String[] args) {
-        String menu =
+public class MenuApp extends CustomScanner {
+    public void MenuApp(){
+         final String menu =
                 "\n\n1. Cadastro de mesa:\n"
                         + "2. Remocao de mesa:\n"
                         + "3. Busca mesa pelo numero:\n"
@@ -24,59 +24,58 @@ public class Menu {
                         + "12.Relatorio de mesas(situacao):\n"
                         + "13.Relatorio de mesas atendidas:\n"
                         + "0. Sair:\n\n";
-
         System.out.println(menu);
         MesaDao mesaDao = new MesaDao();
         GarcomDao garcomDao = new GarcomDao();
-        CustomScanner sc = new CustomScanner();
-        int opcao = sc.scInt("Digite uma opcao:");
+        int opcao = scInt("Digite uma opcao:");
 
-        while (opcao != 0) {
+        while(opcao !=0)
+        {
             switch (opcao) {
                 case 1 -> {
-                    mesaDao.getAll().forEach(Menu::soutMesa);
+                    mesaDao.getAll().forEach(this::soutMesa);
                     Optional<Garcom> garcom = garcomDao.get();
-                    if(garcom.isPresent()) {
+                    if (garcom.isPresent()) {
                         mesaDao.create(garcom.get());
-                    }else{
+                    } else {
                         System.out.println("Sistema deve cadastrar ao menos 1 G A R C O M");
                     }
                 }
                 case 2 -> {
-                    mesaDao.getAll().forEach(Menu::soutMesa);
+                    mesaDao.getAll().forEach(this::soutMesa);
                     mesaDao.delete();
                 }
-                case 3 -> mesaDao.get(0).ifPresent(Menu::soutMesa);
+                case 3 -> mesaDao.get(0).ifPresent(this::soutMesa);
 
                 case 4 -> garcomDao.create();
 
                 case 5 -> garcomDao.delete();
 
-                case 6 -> garcomDao.get().ifPresent(Menu::soutGarcom);
+                case 6 -> garcomDao.get().ifPresent(this::soutGarcom);
 
                 case 7 -> {
                     garcomDao.get().ifPresent(mesaDao::alteraGarcom);
-                    mesaDao.getAll().forEach(Menu::soutMesa);
+                    mesaDao.getAll().forEach(this::soutMesa);
                 }
                 case 8 -> mesaDao.alteraStatus();
 
-                case 9 -> mesaDao.getAll().forEach(Menu::soutMesa);
+                case 9 -> mesaDao.getAll().forEach(this::soutMesa);
 
-                case 10 -> garcomDao.getAll().forEach(Menu::soutGarcom);
+                case 10 -> garcomDao.getAll().forEach(this::soutGarcom);
 
-                case 11 -> mesaDao.getMesasCapacidade().forEach(Menu::soutMesa);
+                case 11 -> mesaDao.getMesasCapacidade().forEach(this::soutMesa);
 
-                case 12 -> mesaDao.getMesasSituacao().forEach(Menu::soutMesa);
+                case 12 -> mesaDao.getMesasSituacao().forEach(this::soutMesa);
 
-                case 13 -> mesaDao.getMesasGarcom().forEach(Menu::soutMesa);
+                case 13 -> mesaDao.getMesasGarcom().forEach(this::soutMesa);
             }
             System.out.println(menu);
-            opcao = sc.scInt("Digite uma opcao: ");
+            opcao = scInt("Digite uma opcao: ");
         }
 
-    }
 
-    public static void soutMesa(Mesa mesa) {
+    }
+    private  void soutMesa(Mesa mesa) {
         System.out.println("Mesas cadastradas:" + " \n");
         System.out.println(
                 "Numero da mesa: " + mesa.getNumeroMesa() + "\n" +
@@ -86,7 +85,7 @@ public class Menu {
         );
     }
 
-    public static void soutGarcom(Garcom garcom) {
+    private  void soutGarcom(Garcom garcom) {
         System.out.println(
                 "nome do garcom: " + garcom.getNome() + "\n" +
                         "email do garcom: " + garcom.getEmail() + "\n" +
@@ -97,5 +96,11 @@ public class Menu {
                         "salario do garcom: " + garcom.getSalarioFixo() + "\n" +
                         "sexo : " + garcom.getSexo().getDescricao() + " \n\n"
         );
+    }
+
+    public static class Main {
+        public static void main(String[] args) {
+
+        }
     }
 }

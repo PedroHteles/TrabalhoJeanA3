@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class CustomScanner {
 
-    public String scString(String msg) {
+    protected String scString(String msg) {
         Scanner sc = new Scanner(System.in);
         try {
             System.out.println(msg);
@@ -15,7 +15,7 @@ public class CustomScanner {
         }
     }
 
-    public Long scLong(String msg) {
+    protected Long scLong(String msg) {
         Scanner sc = new Scanner(System.in);
         try {
             System.out.println(msg);
@@ -27,7 +27,7 @@ public class CustomScanner {
 
     }
 
-    public Short scShort(String msg) {
+    protected Short scShort(String msg) {
         Scanner sc = new Scanner(System.in);
         try {
             System.out.println(msg);
@@ -38,7 +38,7 @@ public class CustomScanner {
         }
     }
 
-    public Double scDouble(String msg) {
+    protected Double scDouble(String msg) {
         Scanner sc = new Scanner(System.in);
         try {
             System.out.println(msg);
@@ -49,7 +49,7 @@ public class CustomScanner {
         }
     }
 
-    public int scInt(String nome) {
+    protected int scInt(String nome) {
         System.out.println(nome);
         Scanner sc = new Scanner(System.in);
         try {
@@ -60,7 +60,7 @@ public class CustomScanner {
         }
     }
 
-    public Short scStringMsgFull(String msg) {
+    protected Short scStringMsgFull(String msg) {
         Scanner sc = new Scanner(System.in);
         try {
             System.out.println(msg);
