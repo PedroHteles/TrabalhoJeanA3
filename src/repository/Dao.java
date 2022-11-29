@@ -1,12 +1,10 @@
 package repository;
-
+import model.Garcom;
 import java.util.List;
 import java.util.Optional;
 
 public interface Dao<T>  {
-//    void create(T t);
     List<T> getAll();
     void delete();
-//    Optional<T> get(int value);
     void update(int value);
 }

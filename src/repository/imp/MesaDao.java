@@ -13,11 +13,12 @@ public class MesaDao extends CustomScanner implements Dao<Mesa>, DaoMesa {
 
     private ArrayList<Mesa> mesas = new ArrayList<>();
 
-
     public void create(Garcom garcom) {
 
         int listaMesa = mesas.size();
+
         Long numeroMesa = scLong("Digite o numero da mesa ou digite 0 para voltar ao menu:");
+
         if (numeroMesa == 0) return;
 
         Optional<Mesa> any = mesas.stream()
@@ -25,16 +26,20 @@ public class MesaDao extends CustomScanner implements Dao<Mesa>, DaoMesa {
 
 
         int capacidade = scInt("Digite a capacidade de mesa:");
+
         Short situacao = scShort("Digite 1 para LIVRE, Digite 2 para OCUPADA, digite 3 para RESERVADA: ");
 
         if (situacao >= 1 && situacao <= 3) {
             if (any.isEmpty()) {
-                mesas.add(new Mesa(numeroMesa,
+                Mesa mesa = new Mesa(numeroMesa,
                         capacidade,
                         TipoSituacao.getInstance(situacao),
-                        garcom
-                ));
-                if (mesas.size() > listaMesa) System.out.println("Mesa Cadastrada com sucesso");
+                        garcom);
+                mesas.add(mesa);
+                if (mesas.size() > listaMesa) {
+                    System.out.println("Mesa Cadastrada com sucesso");
+                    garcom.setMesa(mesa);
+                }
             } else {
                 System.out.println("Mesa ja cadastrada !!");
             }
@@ -48,7 +53,7 @@ public class MesaDao extends CustomScanner implements Dao<Mesa>, DaoMesa {
         return mesas;
     }
 
-
+    @Override
     public Optional<Mesa> get(int value) {
         if (value == 1) {
             final Long aLong = scLong("Digite o numero da mesa a ser deletada ou digite 0 para voltar ao menu:");
@@ -72,7 +77,6 @@ public class MesaDao extends CustomScanner implements Dao<Mesa>, DaoMesa {
                 case 1 -> e.setCapacidadeMesa(scInt("Digite uma nova capacidade: "));
                 case 2 -> e.setSituacao(TipoSituacao.getInstance(scShort("Digite 1 para LIVRE, Digite 2 para OCUPADA, digite 3 para RESERVADA: ")));
                 case 3 -> e.setNumeroMesa(scLong("Digite um novo numero para a mesa: "));
-                case 4 -> { e.setSituacao(TipoSituacao.LIVRE);  e.setGarcom(null); }
             }
         });
     }
@@ -85,41 +89,34 @@ public class MesaDao extends CustomScanner implements Dao<Mesa>, DaoMesa {
         });
     }
 
+    @Override
+    public void alteraGarcom(Garcom garcom) { this.get(0).ifPresent(e -> e.setGarcom(garcom)); }
+
+    @Override
+    public void alteraStatus() {
+        final short tipoSituacao = scShort("Digite 1 para LIVRE, Digite 2 para OCUPADA, digite 3 para RESERVADA: ");
+        this.get(0).ifPresent(e -> e.setSituacao( TipoSituacao.getInstance(tipoSituacao)));
+    }
 
     @Override
     public List<Mesa> getMesasCapacidade() {
         final int valor = scInt("Digite a capacidade da sua mesa: ");
         return mesas.stream().filter(e -> valor >= e.getCapacidadeMesa()).toList();
     }
-
+    @Override
     public List<Mesa> getMesasSituacao() {
         final short tipoSituacao = scShort("Digite 1 para LIVRE, Digite 2 para OCUPADA, digite 3 para RESERVADA: ");
         return this.getAll().stream().filter(e -> Objects.equals(e.getSituacao().getValor(), tipoSituacao)).toList();
     }
 
-
+    @Override
     public List<Mesa> getMesasGarcom() {
         return this.getAll().stream().filter(e -> e.getGarcom() != null).toList();
     }
 
+    @Override
     public List<Mesa> getMesasOcupadas() {
         return this.getAll().stream().filter(e -> Objects.equals(e.getSituacao().getValor(), TipoSituacao.OCUPADA.getValor())).toList();
-    }
-
-    @Override
-    public void registraGarcomMesa(Garcom garcom) {
-        Optional<Mesa> mesa = this.get((short) 0);
-        if (mesa.isPresent()) {
-            Optional<Mesa> mesaLivre = mesa.filter(value -> Objects.equals(value.getSituacao().getValor(), TipoSituacao.LIVRE));
-            if (mesaLivre.isPresent()) {
-                System.out.println("Mesa " + mesa.get().getNumeroMesa() + " indisponivel no momento!");
-            } else {
-                Mesa mesaSelecionada = mesa.get();
-                mesaSelecionada.setSituacao(TipoSituacao.OCUPADA);
-                mesaSelecionada.setGarcom(garcom);
-                garcom.setMesa(mesa.get());
-            }
-        }
     }
 
 }

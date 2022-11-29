@@ -4,13 +4,13 @@ import constate.TipoSexo;
 import model.Garcom;
 
 import repository.Dao;
-import repository.DaoGarcom;
 import utils.CustomScanner;
 
 import java.util.*;
 
-public class GarcomDao extends CustomScanner implements Dao<Garcom>, DaoGarcom {
+public class GarcomDao extends CustomScanner implements Dao<Garcom> {
 
+    Garcom garcomSistema = new Garcom();
     private ArrayList<Garcom> garcons = new ArrayList<>();
 
     @Override
@@ -42,9 +42,11 @@ public class GarcomDao extends CustomScanner implements Dao<Garcom>, DaoGarcom {
         this.get().ifPresent(e -> {
             System.out.println("Garcom " + e.getNome() + " foi removido do sistema");
             garcons.remove(e);
+            e.getListaMesas().forEach(list ->{
+                list.setGarcom(garcomSistema);
+            });
         });
     }
-
 
     public void create() {
         String nome = scString("Digite o nome do garcom:");

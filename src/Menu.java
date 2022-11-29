@@ -16,8 +16,8 @@ public class Menu {
                         + "4. Cadastro de garcom:\n"
                         + "5. Remocao de garcom:\n"
                         + "6. Busca garcom pelo email:\n"
-                        + "7. Garcom seleciona mesa livre:\n"
-                        + "8. Garcom  libera mesa selecionada:\n"
+                        + "7. Alterar garcom de mesa:\n"
+                        + "8. Alterar status de mesa:\n"
                         + "9. Relatorio de mesas:\n"
                         + "10.Relatorio dos garcons:\n"
                         + "11.Relatorio de mesas (capacidade de clientes):\n"
@@ -55,10 +55,10 @@ public class Menu {
                 case 6 -> garcomDao.get().ifPresent(Menu::soutGarcom);
 
                 case 7 -> {
-                    garcomDao.get().ifPresent(mesaDao::registraGarcomMesa);
+                    garcomDao.get().ifPresent(mesaDao::alteraGarcom);
                     mesaDao.getAll().forEach(Menu::soutMesa);
                 }
-                case 8 -> mesaDao.update((short) 4);
+                case 8 -> mesaDao.alteraStatus();
 
                 case 9 -> mesaDao.getAll().forEach(Menu::soutMesa);
 
