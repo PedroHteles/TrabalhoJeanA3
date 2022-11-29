@@ -13,8 +13,8 @@ public class MesaDao extends CustomScanner implements Dao<Mesa>, DaoMesa {
 
     private ArrayList<Mesa> mesas = new ArrayList<>();
 
-    @Override
-    public void create() {
+
+    public void create(Garcom garcom) {
 
         int listaMesa = mesas.size();
         Long numeroMesa = scLong("Digite o numero da mesa ou digite 0 para voltar ao menu:");
@@ -31,7 +31,8 @@ public class MesaDao extends CustomScanner implements Dao<Mesa>, DaoMesa {
             if (any.isEmpty()) {
                 mesas.add(new Mesa(numeroMesa,
                         capacidade,
-                        TipoSituacao.getInstance(situacao)
+                        TipoSituacao.getInstance(situacao),
+                        garcom
                 ));
                 if (mesas.size() > listaMesa) System.out.println("Mesa Cadastrada com sucesso");
             } else {
@@ -47,7 +48,7 @@ public class MesaDao extends CustomScanner implements Dao<Mesa>, DaoMesa {
         return mesas;
     }
 
-    @Override
+
     public Optional<Mesa> get(int value) {
         if (value == 1) {
             final Long aLong = scLong("Digite o numero da mesa a ser deletada ou digite 0 para voltar ao menu:");

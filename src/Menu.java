@@ -4,6 +4,8 @@ import repository.imp.GarcomDao;
 import repository.imp.MesaDao;
 import utils.CustomScanner;
 
+import java.util.Optional;
+
 
 public class Menu {
     public static void main(String[] args) {
@@ -33,7 +35,12 @@ public class Menu {
             switch (opcao) {
                 case 1 -> {
                     mesaDao.getAll().forEach(Menu::soutMesa);
-                    mesaDao.create();
+                    Optional<Garcom> garcom = garcomDao.get();
+                    if(garcom.isPresent()) {
+                        mesaDao.create(garcom.get());
+                    }else{
+                        System.out.println("Sistema deve cadastrar ao menos 1 G A R C O M");
+                    }
                 }
                 case 2 -> {
                     mesaDao.getAll().forEach(Menu::soutMesa);
@@ -45,10 +52,10 @@ public class Menu {
 
                 case 5 -> garcomDao.delete();
 
-                case 6 -> garcomDao.get(0).ifPresent(Menu::soutGarcom);
+                case 6 -> garcomDao.get().ifPresent(Menu::soutGarcom);
 
                 case 7 -> {
-                    garcomDao.get(0).ifPresent(mesaDao::registraGarcomMesa);
+                    garcomDao.get().ifPresent(mesaDao::registraGarcomMesa);
                     mesaDao.getAll().forEach(Menu::soutMesa);
                 }
                 case 8 -> mesaDao.update((short) 4);

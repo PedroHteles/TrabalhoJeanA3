@@ -19,7 +19,7 @@ public class GarcomDao extends CustomScanner implements Dao<Garcom>, DaoGarcom {
     }
 
 
-    public Optional<Garcom> get(int value) {
+    public Optional<Garcom> get() {
         String email = scString("Digite o email do garcom ou digite SAIR");
         if(email.toUpperCase().equals("sair")) Optional.empty();
         Optional<Garcom> garcon = garcons.stream().filter(e -> Objects.equals(e.getEmail(), email)).findAny();
@@ -29,7 +29,7 @@ public class GarcomDao extends CustomScanner implements Dao<Garcom>, DaoGarcom {
 
     @Override
     public void update(int value) {
-        this.get(0).ifPresent(e -> {
+        this.get().ifPresent(e -> {
             switch (value) {
                 case 1 -> e.setEmail(scString("Digite um novo email: "));
                 case 2 -> e.setSalarioFixo(scDouble("Digite o novo salario: "));
@@ -39,13 +39,13 @@ public class GarcomDao extends CustomScanner implements Dao<Garcom>, DaoGarcom {
 
     @Override
     public void delete() {
-        this.get(0).ifPresent(e -> {
+        this.get().ifPresent(e -> {
             System.out.println("Garcom " + e.getNome() + " foi removido do sistema");
             garcons.remove(e);
         });
     }
 
-    @Override
+
     public void create() {
         String nome = scString("Digite o nome do garcom:");
         String email = scString("Digite o email do garcom:");

@@ -11,8 +11,10 @@ public class Mesa {
     public Mesa(){}
     public Mesa(final Long numeroMesa,
                 final Integer capacidadeMesa,
-                final TipoSituacao situacao
+                final TipoSituacao situacao,
+                final Garcom garcom
     ) {
+        this.garcom = garcom;
         this.situacao = situacao;
         this.numeroMesa = numeroMesa;
         this.capacidadeMesa = capacidadeMesa;
