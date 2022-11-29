@@ -9,21 +9,27 @@ import utils.CustomScanner;
 import java.util.*;
 
 public class GarcomDao extends CustomScanner implements Dao<Garcom> {
-
-    Garcom garcomSistema = new Garcom();
+    Garcom garcomSistema = new Garcom("sistema","0000000000000","00-00-0000","sistema", 00L,TipoSexo.FEMININO,Double.MIN_VALUE);
     private ArrayList<Garcom> garcons = new ArrayList<>();
+    public void criaGarcomSistema(){
+        garcons.add(garcomSistema);
+    }
+
+
 
     @Override
     public List<Garcom> getAll() {
         return garcons;
     }
 
-
     public Optional<Garcom> get() {
         String email = scString("Digite o email do garcom ou digite SAIR");
-        if(email.toUpperCase().equals("sair")) Optional.empty();
+        if (email.toUpperCase().equals("sair")) Optional.empty();
         Optional<Garcom> garcon = garcons.stream().filter(e -> Objects.equals(e.getEmail(), email)).findAny();
-        if (garcon.isEmpty()) System.out.println("garcom nao encontrado");
+        if (garcon.isEmpty()) {
+            System.out.println("garcom nao encontrado");
+            if (garcons.size() == 0) System.out.println("Sistema deve cadastrar ao menos um GARCOM");
+        }
         return garcon;
     }
 
@@ -42,7 +48,7 @@ public class GarcomDao extends CustomScanner implements Dao<Garcom> {
         this.get().ifPresent(e -> {
             System.out.println("Garcom " + e.getNome() + " foi removido do sistema");
             garcons.remove(e);
-            e.getListaMesas().forEach(list ->{
+            e.getListaMesas().forEach(list -> {
                 list.setGarcom(garcomSistema);
             });
         });

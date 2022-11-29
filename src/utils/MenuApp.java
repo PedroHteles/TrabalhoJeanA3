@@ -29,18 +29,15 @@ public class MenuApp extends CustomScanner {
         System.out.println(menu);
         MesaDao mesaDao = new MesaDao();
         GarcomDao garcomDao = new GarcomDao();
+        garcomDao.criaGarcomSistema();
+
         int opcao = scInt("Digite uma opcao:");
 
         while (opcao != 0) {
             switch (opcao) {
                 case 1 -> {
                     mesaDao.getAll().forEach(this::soutMesa);
-                    Optional<Garcom> garcom = garcomDao.get();
-                    if (garcom.isPresent()) {
-                        mesaDao.create(garcom.get());
-                    } else {
-                        System.out.println("Sistema deve cadastrar ao menos um GARCOM");
-                    }
+                    garcomDao.get().ifPresent(mesaDao::create);
                 }
                 case 2 -> {
                     mesaDao.getAll().forEach(this::soutMesa);
@@ -73,8 +70,6 @@ public class MenuApp extends CustomScanner {
             System.out.println(menu);
             opcao = scInt("Digite uma opcao: ");
         }
-
-
     }
 
     private void soutMesa(Mesa mesa) {
