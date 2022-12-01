@@ -1,24 +1,32 @@
 package banco;
+
 import constate.TipoSexo;
 import constate.TipoSituacao;
 import model.Garcom;
 import model.Mesa;
+
 import java.sql.*;
 
-public class Select {
+public class SelectWhere {
     public static void main(String[] args) {
+        selectWhereId(1L);
+    }
+
+    private static void selectWhereId(Long id) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-        }catch (ClassNotFoundException e){
-            e.printStackTrace();;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            ;
         }
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistema","root","password");
-            Statement st = con.createStatement();
-        ){
-            String query = "select * from mesas";
-                    st.execute(query);
+
+        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistema", "root", "password");
+             Statement st = con.createStatement();
+        ) {
+            String query = "select * from mesas where id= " + id;
+            st.execute(query);
             ResultSet resultSet = st.getResultSet();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 Mesa selectObj = new Mesa();
                 selectObj.setId(resultSet.getInt(1));
                 selectObj.setNumeroMesa(resultSet.getLong(2));
@@ -29,7 +37,7 @@ public class Select {
                 Statement st1 = con.createStatement();
                 st1.execute(queryGarcom);
                 ResultSet resultSet1 = st1.getResultSet();
-                while (resultSet1.next()){
+                while (resultSet1.next()) {
                     resultSet1.getInt(1);
                     Garcom garcomSistema = new Garcom(
                             resultSet1.getString(2),
@@ -39,16 +47,17 @@ public class Select {
                             resultSet1.getLong(6),
                             TipoSexo.getInstance(resultSet1.getShort(7)),
                             resultSet1.getDouble(8)
-                            );
+                    );
                     selectObj.setGarcom(garcomSistema);
                 }
             }
         } catch (SQLException se) {
             System.out.println(se.getMessage());
             se.printStackTrace();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }
 }
+
