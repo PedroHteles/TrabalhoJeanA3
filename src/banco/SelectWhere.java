@@ -9,10 +9,12 @@ import java.sql.*;
 
 public class SelectWhere {
     public static void main(String[] args) {
-        selectWhereId(1L);
+
+        Mesa mesa = selectWhereId(1L);
+        System.out.println(mesa.getGarcom().getEmail());
     }
 
-    private static void selectWhereId(Long id) {
+    private static Mesa selectWhereId(Long id) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -33,7 +35,6 @@ public class SelectWhere {
                 selectObj.setCapacidadeMesa(resultSet.getInt(3));
                 selectObj.setSituacao(TipoSituacao.getInstance(resultSet.getShort(4)));
                 String queryGarcom = "select * from garcoms where id = " + resultSet.getLong(5);
-                System.out.println(queryGarcom);
                 Statement st1 = con.createStatement();
                 st1.execute(queryGarcom);
                 ResultSet resultSet1 = st1.getResultSet();
@@ -50,6 +51,7 @@ public class SelectWhere {
                     );
                     selectObj.setGarcom(garcomSistema);
                 }
+                return selectObj;
             }
         } catch (SQLException se) {
             System.out.println(se.getMessage());
@@ -58,6 +60,7 @@ public class SelectWhere {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+        return null;
     }
 }
 
