@@ -1,5 +1,4 @@
 package repository.imp;
-
 import constate.TipoSituacao;
 import model.Garcom;
 import model.Mesa;
