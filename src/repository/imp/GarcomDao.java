@@ -9,7 +9,12 @@ import utils.CustomScanner;
 import java.util.*;
 
 public class GarcomDao extends CustomScanner implements Dao<Garcom> {
-    Garcom garcomSistema = new Garcom("sistema","0000000000000","00-00-0000","sistema", 00L,TipoSexo.FEMININO,Double.MIN_VALUE);
+    Garcom garcomSistema = new Garcom(
+            "sistema",
+            "0000000000000",
+            "00-00-0000",
+            "sistema", 00L,
+            TipoSexo.FEMININO,Double.MIN_VALUE);
     private ArrayList<Garcom> garcons = new ArrayList<>();
     public void criaGarcomSistema(){
         garcons.add(garcomSistema);

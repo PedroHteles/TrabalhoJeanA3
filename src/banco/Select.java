@@ -1,5 +1,6 @@
 package banco;
 
+import constate.TipoSexo;
 import constate.TipoSituacao;
 import model.Garcom;
 import model.Mesa;
@@ -24,7 +25,6 @@ public class Select {
 
             while (resultSet.next()){
                 Mesa selectObj = new Mesa();
-                Garcom garcomRelacionado = new Garcom();
                 selectObj.setId(resultSet.getInt(1));
                 selectObj.setNumeroMesa(resultSet.getLong(2));
                 selectObj.setCapacidadeMesa(resultSet.getInt(3));
@@ -36,6 +36,18 @@ public class Select {
                 ResultSet resultSet1 = st1.getResultSet();
                 while (resultSet1.next()){
                     resultSet1.getInt(1);
+                    Garcom garcomSistema = new Garcom(
+                            resultSet1.getString(2),
+                            resultSet1.getString(3),
+                            resultSet1.getString(4),
+                            resultSet1.getString(5),
+                            resultSet1.getLong(6),
+                            TipoSexo.getInstance(resultSet1.getShort(7)),
+                            resultSet1.getDouble(8)
+                            );
+                    System.out.println(garcomSistema.getEmail());
+                    System.out.println(garcomSistema.getNome());
+                    System.out.println(garcomSistema.getSexo());
                 }
 
 
