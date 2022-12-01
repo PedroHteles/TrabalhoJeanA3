@@ -14,12 +14,14 @@ public class Select {
             e.printStackTrace();;
         }
         try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistema","root","password");
+             Connection con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistema","root","password");
             Statement st = con.createStatement();
         ){
             String query = "select * from mesas";
                     st.execute(query);
             ResultSet resultSet = st.getResultSet();
             con.close();
+
             Statement st1 = con.createStatement();
             while (resultSet.next()){
                 Mesa selectObj = new Mesa();
