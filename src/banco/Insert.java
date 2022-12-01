@@ -1,9 +1,6 @@
 package banco;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class Insert {
     public static void main(String[] args) {
@@ -12,11 +9,17 @@ public class Insert {
         }catch (ClassNotFoundException e){
             e.printStackTrace();;
         }
-        try (Connection con = DriverManager.getConnection("jdbc:mysql//localhost:3306/sistema","root","password");
+        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sistema","root","password");
             Statement st = con.createStatement();
         ){
             String query = "select * from mesas";
                     st.execute(query);
+            ResultSet resultSet = st.getResultSet();
+            while (resultSet.next()){
+                System.out.println(resultSet.getInt(1));
+                System.out.println(resultSet.getLong(2));
+                System.out.println(resultSet.getInt(3));
+            }
         } catch (SQLException se) {
             System.out.println(se.getMessage());
             se.printStackTrace();
