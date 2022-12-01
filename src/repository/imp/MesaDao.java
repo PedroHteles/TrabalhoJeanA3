@@ -30,7 +30,7 @@ public class MesaDao extends CustomScanner implements Dao<Mesa>, DaoMesa {
 
         if (situacao >= 1 && situacao <= 3) {
             if (any.isEmpty()) {
-                Mesa mesa = new Mesa(numeroMesa,
+                Mesa mesa = new Mesa(1,numeroMesa,
                         capacidade,
                         TipoSituacao.getInstance(situacao),
                         garcom);

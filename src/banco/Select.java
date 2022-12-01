@@ -1,8 +1,12 @@
 package banco;
 
+import constate.TipoSituacao;
+import model.Garcom;
+import model.Mesa;
+
 import java.sql.*;
 
-public class Insert {
+public class Select {
     public static void main(String[] args) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -15,10 +19,16 @@ public class Insert {
             String query = "select * from mesas";
                     st.execute(query);
             ResultSet resultSet = st.getResultSet();
+            con.close();
+            Statement st1 = con.createStatement();
             while (resultSet.next()){
-                System.out.println(resultSet.getInt(1));
-                System.out.println(resultSet.getLong(2));
-                System.out.println(resultSet.getInt(3));
+                Mesa selectObj = new Mesa();
+                Garcom garcomRelacionado = new Garcom();
+                selectObj.setId(resultSet.getInt(1));
+                selectObj.setNumeroMesa(resultSet.getLong(2));
+                selectObj.setCapacidadeMesa(resultSet.getInt(3));
+                selectObj.setSituacao(TipoSituacao.getInstance(resultSet.getShort(5)));
+//                selectObj.setIdGarcom(resultSet.getLong(6));
             }
         } catch (SQLException se) {
             System.out.println(se.getMessage());
@@ -27,5 +37,6 @@ public class Insert {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+
     }
 }

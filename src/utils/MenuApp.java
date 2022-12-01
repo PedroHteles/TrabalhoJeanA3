@@ -5,8 +5,6 @@ import model.Mesa;
 import repository.imp.GarcomDao;
 import repository.imp.MesaDao;
 
-import java.util.Optional;
-
 
 public class MenuApp extends CustomScanner {
     public void MenuApp() {
