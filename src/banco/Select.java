@@ -28,10 +28,17 @@ public class Select {
                 selectObj.setId(resultSet.getInt(1));
                 selectObj.setNumeroMesa(resultSet.getLong(2));
                 selectObj.setCapacidadeMesa(resultSet.getInt(3));
-                selectObj.setSituacao(TipoSituacao.getInstance(resultSet.getShort(5)));
-                String queryGarcom = "select * from garcoms where id = " + resultSet.getLong(6);
+                selectObj.setSituacao(TipoSituacao.getInstance(resultSet.getShort(4)));
+                String queryGarcom = "select * from garcoms where id = " + resultSet.getLong(5);
                 System.out.println(queryGarcom);
                 Statement st1 = con.createStatement();
+                st1.execute(queryGarcom);
+                ResultSet resultSet1 = st1.getResultSet();
+                while (resultSet1.next()){
+                    resultSet1.getInt(1);
+                }
+
+
 
 //                selectObj.setIdGarcom(resultSet.getLong(6));
             }
