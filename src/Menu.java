@@ -35,18 +35,13 @@ public class Menu {
             switch (opcao) {
                 case 1 -> {
                     mesaDao.getAll().forEach(Menu::soutMesa);
-                    Optional<Garcom> garcom = garcomDao.get();
-                    if(garcom.isPresent()) {
-                        mesaDao.create(garcom.get());
-                    }else{
-                        System.out.println("Sistema deve cadastrar ao menos 1 G A R C O M");
-                    }
+                    mesaDao.create();
                 }
                 case 2 -> {
                     mesaDao.getAll().forEach(Menu::soutMesa);
                     mesaDao.delete();
                 }
-                case 3 -> mesaDao.get(0).ifPresent(Menu::soutMesa);
+                case 3 -> mesaDao.get().ifPresent(Menu::soutMesa);
 
                 case 4 -> garcomDao.create();
 
@@ -58,7 +53,7 @@ public class Menu {
                     garcomDao.get().ifPresent(mesaDao::registraGarcomMesa);
                     mesaDao.getAll().forEach(Menu::soutMesa);
                 }
-                case 8 -> mesaDao.update((short) 4);
+                case 8 -> mesaDao.update();
 
                 case 9 -> mesaDao.getAll().forEach(Menu::soutMesa);
 

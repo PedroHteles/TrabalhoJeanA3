@@ -1,125 +1,151 @@
 package repository.imp;
 
 import constate.TipoSituacao;
+import dB.ConnectionFactory;
 import model.Garcom;
 import model.Mesa;
 import repository.Dao;
 import repository.DaoMesa;
 import utils.CustomScanner;
 
+import javax.xml.transform.Result;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 public class MesaDao extends CustomScanner implements Dao<Mesa>, DaoMesa {
 
-    private ArrayList<Mesa> mesas = new ArrayList<>();
 
-
-    public void create(Garcom garcom) {
-
-        int listaMesa = mesas.size();
+    @Override
+    public void create() {
         Long numeroMesa = scLong("Digite o numero da mesa ou digite 0 para voltar ao menu:");
         if (numeroMesa == 0) return;
+        Optional<Mesa> byId = this.findById(numeroMesa);
+        try {
+        if(!byId.isPresent()){
+            int capacidade = scInt("Digite a capacidade de mesa:");
+            Short situacao = scShort("Digite 1 para LIVRE, Digite 2 para OCUPADA, digite 3 para RESERVADA: ");
+            if (situacao >= 1 && situacao <= 3) {
+                Connection connection = ConnectionFactory.createConnection();
+                String query = "INSERT INTO `sistema`.`mesas` (`numero_mesa`, `capacidade_mesa`,`situacao_mesa`) VALUES (?, ?,?);";
+                PreparedStatement ps = connection.prepareStatement(query);
+                ps.setLong(1,numeroMesa);
+                ps.setLong(2,capacidade);
+                ps.setShort(3,situacao);
 
-        Optional<Mesa> any = mesas.stream()
-                .filter(e -> Objects.equals(e.getNumeroMesa(), numeroMesa)).findAny();
-
-
-        int capacidade = scInt("Digite a capacidade de mesa:");
-        Short situacao = scShort("Digite 1 para LIVRE, Digite 2 para OCUPADA, digite 3 para RESERVADA: ");
-
-        if (situacao >= 1 && situacao <= 3) {
-            if (any.isEmpty()) {
-                mesas.add(new Mesa(numeroMesa,
-                        capacidade,
-                        TipoSituacao.getInstance(situacao),
-                        garcom
-                ));
-                if (mesas.size() > listaMesa) System.out.println("Mesa Cadastrada com sucesso");
+                int i = ps.executeUpdate();
+                if(i==0){
+                    System.out.println("mesa nao cadastrada verifique!");
+                }else{
+                    System.out.println("mesa cadastrada !");
+                }
             } else {
-                System.out.println("Mesa ja cadastrada !!");
+                System.out.println("Valor invalido!! ");
             }
-        } else {
-            System.out.println("Valor invalido!! ");
+        }else System.out.println("mesa ja cadastrada");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
+
+    }
+
+
+    @Override
+    public Optional<Mesa> get() {
+        return Optional.empty();
     }
 
     @Override
     public ArrayList<Mesa> getAll() {
-        return mesas;
-    }
+        final ArrayList<Mesa> Mesas = new ArrayList<>();
+        try {
+            Connection connection = ConnectionFactory.createConnection();
+            String query = "select * from sistema.mesas";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ResultSet resulQuery = ps.executeQuery();
+            while (resulQuery.next())  Mesas.add(resultToObject(resulQuery));
+            if(Mesas.size() == 0) {
+                System.out.println("Nenhuma mesa nao encontrada");
+                return new ArrayList<>();
+            }else{
+                return Mesas;
+            }
+        } catch (SQLException se) {
+            System.out.println(se);
+            return null;
 
-
-    public Optional<Mesa> get(int value) {
-        if (value == 1) {
-            final Long aLong = scLong("Digite o numero da mesa a ser deletada ou digite 0 para voltar ao menu:");
-            if (aLong == 0) return Optional.empty();
-            Optional<Mesa> any = mesas.stream().filter(e -> Objects.equals(e.getNumeroMesa(), aLong)).findAny();
-            if (any.isEmpty()) System.out.println("mesa nao encontrada");
-            return any;
         }
-        final Long aLong = scLong("Digite o numero da mesa: ");
-        Optional<Mesa> any = mesas.stream()
-                .filter(e -> Objects.equals(e.getNumeroMesa(), aLong)).findAny();
-        if (any.isEmpty()) System.out.println("mesa nao encontrada");
-        return any;
-
     }
 
     @Override
-    public void update(int value) {
-        this.get((short) 0).ifPresent(e -> {
-            switch (value) {
-                case 1 -> e.setCapacidadeMesa(scInt("Digite uma nova capacidade: "));
-                case 2 -> e.setSituacao(TipoSituacao.getInstance(scShort("Digite 1 para LIVRE, Digite 2 para OCUPADA, digite 3 para RESERVADA: ")));
-                case 3 -> e.setNumeroMesa(scLong("Digite um novo numero para a mesa: "));
-                case 4 -> { e.setSituacao(TipoSituacao.LIVRE);  e.setGarcom(null); }
-            }
-        });
+    public void update() {
+    }
+
+    @Override
+    public Optional<Mesa> findById(Long id) {
+        try {
+            Connection connection = ConnectionFactory.createConnection();
+            String query = "select * from sistema.mesas where id = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setLong(1,id);
+            ResultSet resulQuery = ps.executeQuery();
+            while (resulQuery.next()) return Optional.of(resultToObject(resulQuery));
+            System.out.println("mesa nao encontrada");
+            return Optional.empty();
+        } catch (SQLException se) {
+            System.out.println(se);
+            return Optional.empty();
+
+        }
     }
 
     @Override
     public void delete() {
-        this.get(1).ifPresent(e -> {
-            mesas.remove(e);
-            System.out.println("numero da mesa: " + e.getNumeroMesa() + " deletada");
-        });
+
     }
 
 
+    // motodos Mesa adicionais
     @Override
     public List<Mesa> getMesasCapacidade() {
-        final int valor = scInt("Digite a capacidade da sua mesa: ");
-        return mesas.stream().filter(e -> valor >= e.getCapacidadeMesa()).toList();
+
+        return null;
     }
 
     public List<Mesa> getMesasSituacao() {
-        final short tipoSituacao = scShort("Digite 1 para LIVRE, Digite 2 para OCUPADA, digite 3 para RESERVADA: ");
-        return this.getAll().stream().filter(e -> Objects.equals(e.getSituacao().getValor(), tipoSituacao)).toList();
+
+        return null;
     }
 
 
     public List<Mesa> getMesasGarcom() {
-        return this.getAll().stream().filter(e -> e.getGarcom() != null).toList();
+
+        return null;
     }
 
     public List<Mesa> getMesasOcupadas() {
-        return this.getAll().stream().filter(e -> Objects.equals(e.getSituacao().getValor(), TipoSituacao.OCUPADA.getValor())).toList();
+
+        return null;
     }
 
     @Override
     public void registraGarcomMesa(Garcom garcom) {
-        Optional<Mesa> mesa = this.get((short) 0);
-        if (mesa.isPresent()) {
-            Optional<Mesa> mesaLivre = mesa.filter(value -> Objects.equals(value.getSituacao().getValor(), TipoSituacao.LIVRE));
-            if (mesaLivre.isPresent()) {
-                System.out.println("Mesa " + mesa.get().getNumeroMesa() + " indisponivel no momento!");
-            } else {
-                Mesa mesaSelecionada = mesa.get();
-                mesaSelecionada.setSituacao(TipoSituacao.OCUPADA);
-                mesaSelecionada.setGarcom(garcom);
-                garcom.setMesa(mesa.get());
-            }
-        }
     }
 
+
+    private Mesa resultToObject(ResultSet resultSet){
+        Mesa selectObj = new Mesa();
+        try {
+            selectObj.setId(resultSet.getLong(1));
+            selectObj.setNumeroMesa(resultSet.getLong(2));
+            selectObj.setCapacidadeMesa(resultSet.getInt(3));
+            selectObj.setSituacao(TipoSituacao.getInstance(resultSet.getShort(4)));
+            return selectObj;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class Garcom {
 
+    private Long id;
     private String nome;
     private String cpf;
     private String dataNascimento;
@@ -14,14 +15,20 @@ public class Garcom {
     private TipoSexo sexo;
     private Double salarioFixo;
     private ArrayList<Mesa> listaMesas = new ArrayList<>();
-    public Garcom(){}
-    public Garcom(final String nome,
-                  final String cpf,
-                  final String dataNascimento,
-                  final String email,
-                  final Long telefone,
-                  final TipoSexo sexo,
-                  final Double salarioFixo) {
+
+    public Garcom() {
+    }
+
+    public Garcom(
+            final Long id,
+            final String nome,
+            final String cpf,
+            final String dataNascimento,
+            final String email,
+            final Long telefone,
+            final TipoSexo sexo,
+            final Double salarioFixo) {
+        this.id = id;
         this.nome = nome;
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
@@ -31,9 +38,25 @@ public class Garcom {
         this.salarioFixo = salarioFixo;
     }
 
-    public ArrayList<Mesa> getListaMesas() {return listaMesas;}
+    public Long getId() {
+        return id;
+    }
 
-    public void setMesa(Mesa mesa) {this.listaMesas.add(mesa);}
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setListaMesas(ArrayList<Mesa> listaMesas) {
+        this.listaMesas = listaMesas;
+    }
+
+    public ArrayList<Mesa> getListaMesas() {
+        return listaMesas;
+    }
+
+    public void setMesa(Mesa mesa) {
+        this.listaMesas.add(mesa);
+    }
 
     public String getNome() {
         return nome;
