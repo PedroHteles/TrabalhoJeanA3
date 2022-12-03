@@ -2,20 +2,13 @@ package repository.imp;
 
 import constate.TipoSituacao;
 import dB.ConnectionFactory;
-import model.Garcom;
 import model.Mesa;
-import repository.Dao;
-import repository.DaoMesa;
+import repository.MesaDao;
 import utils.CustomScanner;
 
-import javax.xml.transform.Result;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
-public class MesaDao extends CustomScanner implements DaoMesa{
+public class MesaImplDaoImpl extends ConnectionFactory implements MesaDao {
     @Override
     public void create() {
 

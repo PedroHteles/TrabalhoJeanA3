@@ -1,16 +1,15 @@
 package repository.imp;
 
-import constate.TipoSexo;
+import dB.ConnectionFactory;
 import model.Garcom;
 
 import model.Mesa;
-import repository.Dao;
-import repository.DaoGarcom;
+import repository.GarcomDao;
 import utils.CustomScanner;
 
 import java.util.*;
 
-public class GarcomDao extends CustomScanner implements DaoGarcom {
+public class GarcomImplDaoImpl extends ConnectionFactory  implements GarcomDao {
 
     @Override
     public void create() {

@@ -4,9 +4,8 @@ import model.Garcom;
 import model.Mesa;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface DaoGarcom extends Dao<Garcom> {
+public interface GarcomDao extends Dao<Garcom> {
 
     List<Mesa> getMesas(Garcom garcom);
     void registraGarcomMesa( Garcom garcom);

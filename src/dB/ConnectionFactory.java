@@ -1,10 +1,12 @@
 package dB;
 
+import utils.CustomScanner;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class ConnectionFactory {
+public class  ConnectionFactory extends CustomScanner {
     public static Connection createConnection() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/sistema"; //Nome da base de dados
         String user = "root"; //nome do usuário do MySQL

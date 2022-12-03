@@ -1,10 +1,8 @@
 import model.Garcom;
 import model.Mesa;
-import repository.imp.GarcomDao;
-import repository.imp.MesaDao;
+import repository.imp.GarcomImplDaoImpl;
+import repository.imp.MesaImplDaoImpl;
 import utils.CustomScanner;
-
-import java.util.Optional;
 
 
 public class Menu {
@@ -25,44 +23,44 @@ public class Menu {
                         + "0. Sair:\n\n";
 
         System.out.println(menu);
-        MesaDao mesaDao = new MesaDao();
-        GarcomDao garcomDao = new GarcomDao();
+        MesaImplDaoImpl mesaImpl = new MesaImplDaoImpl();
+        GarcomImplDaoImpl garcomImpl = new GarcomImplDaoImpl();
         CustomScanner sc = new CustomScanner();
         int opcao = sc.scInt("Digite uma opcao:");
 
         while (opcao != 0) {
             switch (opcao) {
                 case 1 -> {
-                    mesaDao.getAll().forEach(Menu::soutMesa);
-                    mesaDao.create();
+                    mesaImpl.getAll().forEach(Menu::soutMesa);
+                    mesaImpl.create();
                 }
                 case 2 -> {
-                    mesaDao.getAll().forEach(Menu::soutMesa);
-                    mesaDao.delete();
+                    mesaImpl.getAll().forEach(Menu::soutMesa);
+                    mesaImpl.delete();
                 }
-                case 3 -> mesaDao.get().ifPresent(Menu::soutMesa);
+                case 3 -> mesaImpl.get().ifPresent(Menu::soutMesa);
 
-                case 4 -> garcomDao.create();
+                case 4 -> garcomImpl.create();
 
-                case 5 -> garcomDao.delete();
+                case 5 -> garcomImpl.delete();
 
-                case 6 -> garcomDao.buscarPeloEmail().ifPresent(Menu::soutGarcom);
+                case 6 -> garcomImpl.buscarPeloEmail().ifPresent(Menu::soutGarcom);
 
                 case 7 -> {
-                    garcomDao.buscarPeloEmail().ifPresent(garcomDao::registraGarcomMesa);
-                    mesaDao.getAll().forEach(Menu::soutMesa);
+                    garcomImpl.buscarPeloEmail().ifPresent(garcomImpl::registraGarcomMesa);
+                    mesaImpl.getAll().forEach(Menu::soutMesa);
                 }
-                case 8 -> mesaDao.update();
+                case 8 -> mesaImpl.update();
 
-                case 9 -> mesaDao.getAll().forEach(Menu::soutMesa);
+                case 9 -> mesaImpl.getAll().forEach(Menu::soutMesa);
 
-                case 10 -> garcomDao.getAll().forEach(Menu::soutGarcom);
+                case 10 -> garcomImpl.getAll().forEach(Menu::soutGarcom);
 
-                case 11 -> mesaDao.getMesasCapacidade().forEach(Menu::soutMesa);
+                case 11 -> mesaImpl.getMesasCapacidade().forEach(Menu::soutMesa);
 
-                case 12 -> mesaDao.getMesasSituacao().forEach(Menu::soutMesa);
+                case 12 -> mesaImpl.getMesasSituacao().forEach(Menu::soutMesa);
 
-                case 13 -> mesaDao.getAll().forEach(Menu::soutMesa);
+                case 13 -> mesaImpl.getAll().forEach(Menu::soutMesa);
             }
             System.out.println(menu);
             opcao = sc.scInt("Digite uma opcao: ");
