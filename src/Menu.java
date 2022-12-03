@@ -11,18 +11,17 @@ public class Menu {
     public static void main(String[] args) {
         String menu =
                 "\n\n1. Cadastro de mesa:\n"
-                        + "2. Remocao de mesa:\n"
-                        + "3. Busca mesa pelo numero:\n"
+                        + "2. Busca mesa pelo numero:\n"
+                        + "3. Remocao de mesa:\n"
                         + "4. Cadastro de garcom:\n"
-                        + "5. Remocao de garcom:\n"
-                        + "6. Busca garcom pelo email:\n"
-                        + "7. Garcom seleciona mesa livre:\n"
-                        + "8. Garcom  libera mesa selecionada:\n"
-                        + "9. Relatorio de mesas:\n"
-                        + "10.Relatorio dos garcons:\n"
-                        + "11.Relatorio de mesas (capacidade de clientes):\n"
-                        + "12.Relatorio de mesas(situacao):\n"
-                        + "13.Relatorio de mesas atendidas:\n"
+                        + "5. Busca garcom pelo email:\n"
+                        + "6. Remocao de garcom:\n"
+                        + "7. Registra garcom mesa:\n"
+                        + "8. Relatório com todas as mesas que um garçom atende e que estão ocupadas :\n"
+                        + "9.Busca nome do garçom responsável por uma dada mesa :\n"
+                        + "10.Relatório com todas as mesas que um garçom atende:\n"
+                        + "11.Relatório com todas as mesas livres e o nome do garçom responsável pela mesa :\n"
+                        + "12.Relatório da quantidade de mesas que cada garçom está atendendo:\n"
                         + "0. Sair:\n\n";
 
         System.out.println(menu);
@@ -47,10 +46,10 @@ public class Menu {
 
                 case 5 -> garcomDao.delete();
 
-                case 6 -> garcomDao.get().ifPresent(Menu::soutGarcom);
+                case 6 -> garcomDao.buscarPeloEmail().ifPresent(Menu::soutGarcom);
 
                 case 7 -> {
-                    garcomDao.get().ifPresent(mesaDao::registraGarcomMesa);
+                    garcomDao.buscarPeloEmail().ifPresent(garcomDao::registraGarcomMesa);
                     mesaDao.getAll().forEach(Menu::soutMesa);
                 }
                 case 8 -> mesaDao.update();
@@ -63,7 +62,7 @@ public class Menu {
 
                 case 12 -> mesaDao.getMesasSituacao().forEach(Menu::soutMesa);
 
-                case 13 -> mesaDao.getMesasGarcom().forEach(Menu::soutMesa);
+                case 13 -> mesaDao.getAll().forEach(Menu::soutMesa);
             }
             System.out.println(menu);
             opcao = sc.scInt("Digite uma opcao: ");
