@@ -3,25 +3,88 @@ package repository.imp;
 import constate.TipoSituacao;
 import dB.ConnectionFactory;
 import model.Mesa;
+import model.MesaDto;
 import repository.MesaDao;
 import utils.CustomScanner;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 public class MesaImplDaoImpl extends ConnectionFactory implements MesaDao {
     @Override
     public void create() {
+        Long numeroMesa = scLong("Digite o numero da mesa ou digite 0 para voltar ao menu:");
+        if (numeroMesa == 0) return;
+        Optional<MesaDto> byId = this.findByNumero(numeroMesa);
+        try {
+            if (byId.isEmpty()) {
+                int capacidade = scInt("Digite a capacidade de mesa:");
+                Short situacao = scShort("Digite 1 para LIVRE, Digite 2 para OCUPADA, digite 3 para RESERVADA: ");
+                if (situacao >= 1 && situacao <= 3) {
+                    Connection connection = ConnectionFactory.createConnection();
+                    String query = "INSERT INTO `sistema`.`mesas` (`numero_mesa`, `capacidade_mesa`,`situacao_mesa`) VALUES (?, ?,?);";
+                    PreparedStatement ps = connection.prepareStatement(query);
+                    ps.setLong(1, numeroMesa);
+                    ps.setLong(2, capacidade);
+                    ps.setShort(3, situacao);
 
+                    int i = ps.executeUpdate();
+                    if (i == 0) {
+                        System.out.println("mesa nao cadastrada verifique!");
+                    } else {
+                        System.out.println("mesa cadastrada !");
+                    }
+                } else {
+                    System.out.println("Valor invalido!! ");
+                }
+            } else System.out.println("mesa ja cadastrada");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public List<Mesa> getAll() {
-        return null;
+    public ArrayList<MesaDto> getAll() {
+        final ArrayList<MesaDto> mesas = new ArrayList<>();
+        try {
+            Connection connection = ConnectionFactory.createConnection();
+            String query = "select * from sistema.mesas";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ResultSet resulQuery = ps.executeQuery();
+            while (resulQuery.next()) mesas.add(resultToObject(resulQuery));
+            if (mesas.size() == 0) {
+                System.out.println("Nenhuma mesa nao encontrada\n");
+                return new ArrayList<>();
+            } else {
+                System.out.println(mesas.size());
+                return mesas;
+            }
+        } catch (SQLException se) {
+            System.out.println(se);
+            return null;
+
+        }
     }
 
     @Override
     public void delete() {
-
+        this.get().ifPresent(e -> {
+            try {
+                Connection connection = ConnectionFactory.createConnection();
+                String query = "delete from sistema.mesas where id = ?";
+                PreparedStatement ps = connection.prepareStatement(query);
+                ps.setLong(1, e.getId());
+                int i = ps.executeUpdate();
+                if (i == 0) {
+                    System.out.println("Erro ao deletar Mesa");
+                } else System.out.println("Mesa deletado com sucesso");
+            } catch (SQLException se) {
+                System.out.println(se);
+            }
+        });
     }
 
     @Override
@@ -30,214 +93,189 @@ public class MesaImplDaoImpl extends ConnectionFactory implements MesaDao {
     }
 
     @Override
-    public Optional<Mesa> findById(Long id) {
-        return Optional.empty();
+    public Optional<MesaDto> findById(Long id) {
+        try {
+            Connection connection = ConnectionFactory.createConnection();
+            String query = "select * from sistema.mesas where id = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setLong(1, id);
+            ResultSet resulQuery = ps.executeQuery();
+            while (resulQuery.next()) return Optional.of(resultToObject(resulQuery));
+            return Optional.empty();
+        } catch (SQLException se) {
+            System.out.println(se);
+            return Optional.empty();
+
+        }
     }
 
     @Override
-    public Optional<Mesa> get() {
-        return Optional.empty();
+    public Optional<MesaDto> get() {
+
+        try {
+            Connection connection = ConnectionFactory.createConnection();
+            Long numeroMesa = scLong("Digite o numero da mesa ou digite 0 para voltar ao menu:");
+            if (numeroMesa == 0) return Optional.empty();
+            String query = "select * from sistema.mesas where numero_mesa = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setLong(1, numeroMesa);
+            ResultSet resulQuery = ps.executeQuery();
+            while (resulQuery.next()) return Optional.of(resultToObject(resulQuery));
+            System.out.println("mesa nao encontrada");
+            return Optional.empty();
+        } catch (SQLException se) {
+            System.out.println(se);
+            return Optional.empty();
+
+        }
     }
 
-
-    @Override
-    public Optional<String> getNomeGarcom() {
-        return Optional.empty();
-    }
 
     @Override
     public Optional<TipoSituacao> getSituacaoMesa() {
-        return Optional.empty();
+        Optional<MesaDto> mesa = this.get();
+        if (mesa.isPresent()) {
+            try {
+                Connection connection = ConnectionFactory.createConnection();
+                String query = "select * from sistema.mesas where id = ?";
+                PreparedStatement ps = connection.prepareStatement(query);
+                ps.setLong(1, mesa.get().getId());
+                ResultSet resulQuery = ps.executeQuery();
+                while (resulQuery.next()) return Optional.of(resultToObject(resulQuery).getSituacao());
+                System.out.println("mesa nao encontrada");
+                return Optional.empty();
+            } catch (SQLException se) {
+                System.out.println(se);
+                return Optional.empty();
+
+            }
+        } else return Optional.empty();
     }
 
     @Override
-    public List<Mesa> getMesasCapacidade() {
-        return null;
+    public List<MesaDto> getMesasCapacidade() {
+        Long capacidadeMinima = scLong("Digite a capicidade minima das mesas");
+        final ArrayList<MesaDto> Mesas = new ArrayList<>();
+        try {
+            Connection connection = ConnectionFactory.createConnection();
+            String query = "select * from sistema.mesas where capacidade_mesa = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setLong(1, capacidadeMinima);
+            ResultSet resulQuery = ps.executeQuery();
+            while (resulQuery.next()) Mesas.add(resultToObject(resulQuery));
+            if (Mesas.size() == 0) {
+                System.out.println("Nenhuma mesa nao encontrada");
+                return new ArrayList<>();
+            } else {
+                return Mesas;
+            }
+        } catch (SQLException se) {
+            System.out.println(se);
+            return new ArrayList<>();
+        }
     }
 
     @Override
-    public List<Mesa> getMesasSituacao() {
-        return null;
+    public List<MesaDto> getMesasSituacao() {
+        final ArrayList<MesaDto> Mesas = new ArrayList<>();
+        try {
+            Short situacao = scShort("Digite 1 para LIVRE, Digite 2 para OCUPADA, digite 3 para RESERVADA: ");
+            if (!(situacao >= 1 && situacao <= 3)) {
+                System.out.println("Valor invalido!! ");
+                return new ArrayList<>();
+            }
+            Connection connection = ConnectionFactory.createConnection();
+            String query = "select * from sistema.mesas where situacao = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setShort(1, situacao);
+            ResultSet resulQuery = ps.executeQuery();
+            while (resulQuery.next()) Mesas.add(resultToObject(resulQuery));
+            if (Mesas.size() == 0) {
+                System.out.println("Nenhuma mesa nao encontrada");
+                return new ArrayList<>();
+            } else {
+                return Mesas;
+            }
+        } catch (SQLException se) {
+            System.out.println(se);
+            return new ArrayList<>();
+
+        }
     }
 
     @Override
-    public List<Mesa> getMesasOcupadas() {
-        return null;
+    public List<MesaDto> getMesasOcupadas() {
+        final ArrayList<MesaDto> Mesas = new ArrayList<>();
+        try {
+            Connection connection = ConnectionFactory.createConnection();
+            String query = "select * from sistema.mesas where situacao = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setShort(1, TipoSituacao.OCUPADA.getValor());
+            ResultSet resulQuery = ps.executeQuery();
+            while (resulQuery.next()) Mesas.add(resultToObject(resulQuery));
+            if (Mesas.size() == 0) {
+                System.out.println("Nenhuma mesa nao encontrada");
+                return new ArrayList<>();
+            } else {
+                return Mesas;
+            }
+        } catch (SQLException se) {
+            System.out.println(se);
+            return new ArrayList<>();
+
+        }
     }
 
     @Override
-    public List<Mesa> getMesasLivres() {
-        return null;
+    public List<MesaDto> getMesasLivres() {
+        final ArrayList<MesaDto> Mesas = new ArrayList<>();
+        try {
+            Connection connection = ConnectionFactory.createConnection();
+            String query = "select * from sistema.mesas where situacao = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setShort(1, TipoSituacao.LIVRE.getValor());
+            ResultSet resulQuery = ps.executeQuery();
+            while (resulQuery.next()) Mesas.add(resultToObject(resulQuery));
+            if (Mesas.size() == 0) {
+                System.out.println("Nenhuma mesa nao encontrada");
+                return new ArrayList<>();
+            } else {
+                return Mesas;
+            }
+        } catch (SQLException se) {
+            System.out.println(se);
+            return new ArrayList<>();
+        }
     }
 
-//    @Override
-//    public void create() {
-//        Long numeroMesa = scLong("Digite o numero da mesa ou digite 0 para voltar ao menu:");
-//        if (numeroMesa == 0) return;
-//        Optional<Mesa> byId = this.findById(numeroMesa);
-//        try {
-//        if(!byId.isPresent()){
-//            int capacidade = scInt("Digite a capacidade de mesa:");
-//            Short situacao = scShort("Digite 1 para LIVRE, Digite 2 para OCUPADA, digite 3 para RESERVADA: ");
-//            if (situacao >= 1 && situacao <= 3) {
-//                Connection connection = ConnectionFactory.createConnection();
-//                String query = "INSERT INTO `sistema`.`mesas` (`numero_mesa`, `capacidade_mesa`,`situacao_mesa`) VALUES (?, ?,?);";
-//                PreparedStatement ps = connection.prepareStatement(query);
-//                ps.setLong(1,numeroMesa);
-//                ps.setLong(2,capacidade);
-//                ps.setShort(3,situacao);
-//
-//                int i = ps.executeUpdate();
-//                if(i==0){
-//                    System.out.println("mesa nao cadastrada verifique!");
-//                }else{
-//                    System.out.println("mesa cadastrada !");
-//                }
-//            } else {
-//                System.out.println("Valor invalido!! ");
-//            }
-//        }else System.out.println("mesa ja cadastrada");
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//    }
-//
-//    public Optional<Mesa> findByNumero() {
-//        try {
-//            Connection connection = ConnectionFactory.createConnection();
-//            Long numeroMesa = scLong("Digite o numero da mesa ou digite 0 para voltar ao menu:");
-//            if (numeroMesa == 0) return Optional.empty();
-//            String query = "select * from sistema.mesas where numero_mesa = ?";
-//            PreparedStatement ps = connection.prepareStatement(query);
-//            ps.setLong(1,numeroMesa);
-//            ResultSet resulQuery = ps.executeQuery();
-//            while (resulQuery.next()) return Optional.of(resultToObject(resulQuery));
-//            System.out.println("mesa nao encontrada");
-//            return Optional.empty();
-//        } catch (SQLException se) {
-//            System.out.println(se);
-//            return Optional.empty();
-//
-//        }
-//    }
-//
-//    @Override
-//    public ArrayList<Mesa> getAll() {
-//        final ArrayList<Mesa> Mesas = new ArrayList<>();
-//        try {
-//            Connection connection = ConnectionFactory.createConnection();
-//            String query = "select * from sistema.mesas";
-//            PreparedStatement ps = connection.prepareStatement(query);
-//            ResultSet resulQuery = ps.executeQuery();
-//            while (resulQuery.next())  Mesas.add(resultToObject(resulQuery));
-//            if(Mesas.size() == 0) {
-//                System.out.println("Nenhuma mesa nao encontrada");
-//                return new ArrayList<>();
-//            }else{
-//                return Mesas;
-//            }
-//        } catch (SQLException se) {
-//            System.out.println(se);
-//            return null;
-//
-//        }
-//    }
-//
-//    @Override
-//    public void update() {
-//    }
-//
-//    @Override
-//    public Optional<Mesa> findById(Long id) {
-//        try {
-//            Connection connection = ConnectionFactory.createConnection();
-//            String query = "select * from sistema.mesas where id = ?";
-//            PreparedStatement ps = connection.prepareStatement(query);
-//            ps.setLong(1,id);
-//            ResultSet resulQuery = ps.executeQuery();
-//            while (resulQuery.next()) return Optional.of(resultToObject(resulQuery));
-//            System.out.println("mesa nao encontrada");
-//            return Optional.empty();
-//        } catch (SQLException se) {
-//            System.out.println(se);
-//            return Optional.empty();
-//
-//        }
-//    }
-//
-//    public Optional<Mesa> findBySituacao() {
-//        try {
-//            Short situacao = scShort("Digite 1 para LIVRE, Digite 2 para OCUPADA, digite 3 para RESERVADA: ");
-//            if (!(situacao >= 1 && situacao <= 3)) {
-//                System.out.println("Valor invalido!! ");
-//                return  Optional.empty();
-//            }
-//            Connection connection = ConnectionFactory.createConnection();
-//            String query = "select * from sistema.mesas where situacao = ?";
-//            PreparedStatement ps = connection.prepareStatement(query);
-//            ps.setShort(1,situacao);
-//            ResultSet resulQuery = ps.executeQuery();
-//            while (resulQuery.next()) return Optional.of(resultToObject(resulQuery));
-//            System.out.println("mesa nao encontrada");
-//            return Optional.empty();
-//        } catch (SQLException se) {
-//            System.out.println(se);
-//            return Optional.empty();
-//
-//        }
-//    }
-//
-//
-//
-//    @Override
-//    public void delete() {
-//
-//    }
-//
-//    // motodos Mesa adicionais
-//    @Override
-//    public List<Mesa> getMesasCapacidade() {
-//
-//        return null;
-//    }
-//
-//    @Override
-//    public List<Mesa> getMesasSituacao() {
-//        return null;
-//    }
-//
-//    @Override
-//    public List<Mesa> getMesasOcupadas() {
-//        return null;
-//    }
-//
-//    @Override
-//    public Optional<String> getNomeGarcom() {
-//        return Optional.empty();
-//    }
-//
-//    @Override
-//    public Optional<TipoSituacao> getSituacaoMesa() {
-//        return Optional.empty();
-//    }
-//
-//    @Override
-//    public List<Mesa> getMesasLivres() {
-//        return null;
-//    }
-//
-//    private Mesa resultToObject(ResultSet resultSet){
-//        Mesa selectObj = new Mesa();
-//        try {
-//            selectObj.setId(resultSet.getLong(1));
-//            selectObj.setNumeroMesa(resultSet.getLong(2));
-//            selectObj.setCapacidadeMesa(resultSet.getInt(3));
-//            selectObj.setSituacao(TipoSituacao.getInstance(resultSet.getShort(4)));
-//            return selectObj;
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//    }
+    public Optional<MesaDto> findByNumero(Long numeroMesa) {
+        try {
+            Connection connection = ConnectionFactory.createConnection();
+            if (numeroMesa == 0) return Optional.empty();
+            String query = "select * from sistema.mesas where numero_mesa = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setLong(1, numeroMesa);
+            ResultSet resulQuery = ps.executeQuery();
+            while (resulQuery.next()) return Optional.of(resultToObject(resulQuery));
+            return Optional.empty();
+        } catch (SQLException se) {
+            System.out.println(se);
+            return Optional.empty();
+
+        }
+    }
+
+    private MesaDto resultToObject(ResultSet resultSet) {
+        try {
+            MesaDto mesaTransfer = new MesaDto(resultSet.getLong(1),
+                    resultSet.getLong(2),
+                    resultSet.getInt(3),
+                    TipoSituacao.getInstance(resultSet.getShort(4)),
+                    resultSet.getLong(5));
+            return mesaTransfer;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

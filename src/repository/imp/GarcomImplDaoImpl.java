@@ -1,12 +1,19 @@
 package repository.imp;
 
+import constate.TipoSexo;
+import constate.TipoSituacao;
 import dB.ConnectionFactory;
 import model.Garcom;
 
 import model.Mesa;
+import model.MesaDto;
 import repository.GarcomDao;
 import utils.CustomScanner;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 public class GarcomImplDaoImpl extends ConnectionFactory  implements GarcomDao {
@@ -33,7 +40,18 @@ public class GarcomImplDaoImpl extends ConnectionFactory  implements GarcomDao {
 
     @Override
     public Optional<Garcom> findById(Long id) {
-        return Optional.empty();
+        try {
+            Connection connection = ConnectionFactory.createConnection();
+            String query = "select * from sistema.garcoms where id = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setLong(1, id);
+            ResultSet resulQuery = ps.executeQuery();
+            while (resulQuery.next()) return Optional.of(resultToObject(resulQuery));
+            return Optional.empty();
+        } catch (SQLException se) {
+            System.out.println(se);
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -41,12 +59,10 @@ public class GarcomImplDaoImpl extends ConnectionFactory  implements GarcomDao {
         return Optional.empty();
     }
 
-    public Optional<Garcom> buscarPeloEmail(){
-        return Optional.empty();
-    }
+
 
     @Override
-    public List<Mesa> getMesas(Garcom garcom) {
+    public List<MesaDto> getMesas(Garcom garcom) {
         return null;
     }
 
@@ -56,17 +72,35 @@ public class GarcomImplDaoImpl extends ConnectionFactory  implements GarcomDao {
     }
 
     @Override
-    public List<Mesa> getMesasOcupadas(Garcom garcom) {
+    public List<MesaDto> getMesasOcupadas(Garcom garcom) {
         return null;
     }
 
     @Override
-    public List<Mesa> getMesasLivres(Garcom garcom) {
+    public List<MesaDto> getMesasLivres(Garcom garcom) {
         return null;
     }
 
     @Override
-    public List<Mesa> getMesasQuantidade(Garcom garcom) {
+    public List<MesaDto> getMesasQuantidade(Garcom garcom) {
         return null;
+    }
+
+    private Garcom resultToObject(ResultSet resultSet) {
+
+        try {
+            Garcom garcom = new Garcom(resultSet.getLong(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getDate(4),
+                    resultSet.getString(5),
+                    resultSet.getLong(7),
+                    TipoSexo.getInstance(resultSet.getShort(7)),
+                    resultSet.getDouble(8));
+            return garcom;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

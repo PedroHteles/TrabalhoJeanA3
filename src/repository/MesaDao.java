@@ -2,19 +2,20 @@ package repository;
 
 import constate.TipoSituacao;
 import model.Mesa;
+import model.MesaDto;
 
 import java.util.List;
 import java.util.Optional;
 
 
-public interface MesaDao extends Dao<Mesa> {
+public interface MesaDao extends Dao<MesaDto> {
 
-    Optional<String> getNomeGarcom();
+
     Optional<TipoSituacao> getSituacaoMesa();
-    List<Mesa> getMesasCapacidade();
-    List<Mesa> getMesasSituacao();
-    List<Mesa> getMesasOcupadas();
-    List<Mesa> getMesasLivres();
+    List<MesaDto> getMesasCapacidade();
+    List<MesaDto> getMesasSituacao();
+    List<MesaDto> getMesasOcupadas();
+    List<MesaDto> getMesasLivres();
 
 
 }

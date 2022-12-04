@@ -2,6 +2,7 @@ package model;
 
 import constate.TipoSituacao;
 
+
 public class Mesa {
 
     private Long id;
@@ -11,23 +12,21 @@ public class Mesa {
     private Garcom garcom;
 
     public Mesa(){}
-    public Mesa(final Long numeroMesa,
-                final Integer capacidadeMesa,
-                final TipoSituacao situacao
+
+
+
+    public Mesa(final MesaDto mesaDto
     ) {
-        this.garcom = garcom;
-        this.situacao = situacao;
-        this.numeroMesa = numeroMesa;
-        this.capacidadeMesa = capacidadeMesa;
+        this.id = mesaDto.getId();
+        this.situacao = mesaDto.getSituacao();
+        this.numeroMesa = mesaDto.getNumeroMesa();
+        this.capacidadeMesa = mesaDto.getCapacidadeMesa();
     }
+
 
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Garcom getGarcom() {

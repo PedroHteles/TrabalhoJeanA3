@@ -3,13 +3,14 @@ package model;
 import constate.TipoSexo;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Garcom {
 
     private Long id;
     private String nome;
     private String cpf;
-    private String dataNascimento;
+    private Date dataNascimento;
     private String email;
     private Long telefone;
     private TipoSexo sexo;
@@ -23,7 +24,7 @@ public class Garcom {
             final Long id,
             final String nome,
             final String cpf,
-            final String dataNascimento,
+            final Date dataNascimento,
             final String email,
             final Long telefone,
             final TipoSexo sexo,
@@ -74,11 +75,11 @@ public class Garcom {
         this.cpf = cpf;
     }
 
-    public String getDataNascimento() {
+    public Date getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(String dataNascimento) {
+    public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
