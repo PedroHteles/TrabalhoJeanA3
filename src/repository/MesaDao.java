@@ -15,7 +15,7 @@ public interface MesaDao extends Dao<MesaDto> {
     List<MesaDto> getMesasCapacidade();
     List<MesaDto> getMesasSituacao();
     List<MesaDto> getMesasOcupadas();
-    List<MesaDto> getMesasLivres();
+    List<Long> getMesasLivres();
 
 
 }

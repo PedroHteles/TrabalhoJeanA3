@@ -227,20 +227,20 @@ public class MesaImplDaoImpl extends ConnectionFactory implements MesaDao {
     }
 
     @Override
-    public List<MesaDto> getMesasLivres() {
-        final ArrayList<MesaDto> Mesas = new ArrayList<>();
+    public List<Long> getMesasLivres() {
+        final List<Long> listaIdMesas = new ArrayList<>();
         try {
             Connection connection = ConnectionFactory.createConnection();
-            String query = "select * from sistema.mesas where situacao = ?";
+            String query = "select m.id from sistema.mesas m where m.situacao_mesa = ? and m.id_garcom IS NOT NULL";
             PreparedStatement ps = connection.prepareStatement(query);
-            ps.setShort(1, TipoSituacao.LIVRE.getValor());
+            ps.setLong(1, TipoSituacao.LIVRE.getValor());
             ResultSet resulQuery = ps.executeQuery();
-            while (resulQuery.next()) Mesas.add(resultToObject(resulQuery));
-            if (Mesas.size() == 0) {
+            while (resulQuery.next()) listaIdMesas.add(resulQuery.getLong(1));
+            if (listaIdMesas.size() == 0) {
                 System.out.println("Nenhuma mesa nao encontrada");
                 return new ArrayList<>();
             } else {
-                return Mesas;
+                return listaIdMesas;
             }
         } catch (SQLException se) {
             System.out.println(se);

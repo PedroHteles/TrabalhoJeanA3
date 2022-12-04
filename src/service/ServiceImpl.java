@@ -18,8 +18,9 @@ public class ServiceImpl implements Service {
     private final GarcomImplDaoImpl garcomImplDaoImpl = new GarcomImplDaoImpl();
 
     @Override
-    public Optional<Mesa> getMesa() {
-        Optional<MesaDto> mesaDto = mesaImplDaoImpl.get();
+    public Optional<Mesa> getMesa(Long id) {
+        Optional<MesaDto> mesaDto = mesaImplDaoImpl.findById(id);
+
         if(mesaDto.isPresent()){
             Mesa mesa = new Mesa(mesaDto.get());
             Optional<Garcom> byId = garcomImplDaoImpl.findById(mesaDto.get().getIdGarcom());
@@ -42,7 +43,16 @@ public class ServiceImpl implements Service {
 
     @Override
     public Optional<Garcom> getGarcom() {
-        return Optional.empty();
+        ArrayList<Mesa> mesas = new ArrayList<>();
+        Optional<Garcom> garcom = garcomImplDaoImpl.get();
+        garcom.ifPresent(e ->{
+            garcomImplDaoImpl.getMesas(e.getId()).forEach(idMesa-> {
+                Optional<Mesa> mesa = this.getMesa(idMesa);
+                mesa.ifPresent(m -> mesas.add(m));
+            });
+            garcom.get().setListaMesas(mesas);
+        });
+        return garcom;
     }
 
     @Override
