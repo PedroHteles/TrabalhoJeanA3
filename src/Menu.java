@@ -38,45 +38,36 @@ public class Menu {
                     service.getMesas().forEach(Menu::soutMesa);
                     service.serviceMesa().create();
                 }
-                case 2 ->service.serviceMesa().get().ifPresent(e -> {
-                    service.getMesa(e.getId()).ifPresent(Menu::soutMesa);
-                });
-
+                case 2 ->
+                        service.serviceMesa().get().ifPresent(e -> service.getMesa(e.getId()).ifPresent(Menu::soutMesa));
                 case 3 -> service.serviceMesa().delete();
-//
-//                case 4 -> garcomImplDaoImpl.getMesasOcupadas().forEach(e -> {
-//                    service.getMesa(e).ifPresent(Menu::soutMesa);
-//                });
-//
+                case 4 -> service.serviceGarcom().create();
                 case 5 -> service.getGarcom().ifPresent(Menu::soutGarcom);
-//
                 case 6 -> service.serviceGarcom().delete();
-//
-//                case 7 -> {
-//                    garcomImplDao.buscarPeloEmail().ifPresent(garcomImplDao::registraGarcomMesa);
-//                    mesaImplDao.getAll().forEach(Menu::soutMesa);
-//                }
+                case 7 ->
+                        service.serviceGarcom().get().ifPresent(e -> service.serviceMesa().registraGarcomMesa(e.getId()));
                 case 8 -> service.serviceMesa().removerGarcom();
-//
-                case 9 -> service.serviceGarcom().getMesasOcupadas().forEach(e -> {
-                    service.getMesa(e).ifPresent(Menu::soutMesa);
-                });
-//
+                case 9 ->
+                        service.serviceGarcom().getMesasOcupadas().forEach(e -> service.getMesa(e).ifPresent(Menu::soutMesa));
                 case 10 -> service.serviceMesa().get().ifPresent(e -> service.getMesa(e.getId()).ifPresent(mesa -> {
-                    if(mesa.getGarcom() != null){
+                    if (mesa.getGarcom() != null) {
                         System.out.println("Garcom responsavel pela mesa " + mesa.getNumeroMesa() + ": " + mesa.getGarcom().getNome());
-                    }else{
-                        System.out.println("Nenhum garcom cadastrado nesta mesa");
-                    }
+                    } else System.out.println("Nenhum garcom cadastrado nesta mesa");
                 }));
-//
-//                case 11 -> mesaImplDao.getMesasCapacidade().forEach(Menu::soutMesa);
-//
+                case 11 -> service.getGarcom().ifPresent(e -> {
+                    System.out.println("nome do garcom: " + e.getNome());
+                    e.getListaMesas().forEach(Menu::soutMesa);
+                });
                 case 12 -> service.serviceMesa().getMesasLivres().forEach(e -> {
                     service.getMesa(e).ifPresent(Menu::soutMesa);
                 });
-//
-//                case 13 -> mesaImplDao.getAll().forEach(Menu::soutMesa);
+                case 13 -> service.serviceGarcom().getAll().forEach(e -> {
+                    System.out.println(
+                            "nome do garcom: " + e.getNome() + "\n" +
+                                    "email do garcom: " + e.getEmail() + "\n" +
+                                    "total de mesas atendidas no momento: " + e.getListaMesas().size() + "\n"
+                    );
+                });
             }
             System.out.println(menu);
             opcao = sc.scInt("Digite uma opcao: ");

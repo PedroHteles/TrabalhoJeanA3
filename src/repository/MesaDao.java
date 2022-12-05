@@ -16,6 +16,7 @@ public interface MesaDao extends Dao<MesaDto> {
     List<MesaDto> getMesasOcupadas();
     List<Long> getMesasLivres();
     void removerGarcom();
+    void registraGarcomMesa(Long id);
 
 
 }

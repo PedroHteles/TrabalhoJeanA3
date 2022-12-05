@@ -264,6 +264,25 @@ public class MesaImplDaoImpl extends ConnectionFactory implements MesaDao {
         });
     }
 
+    @Override
+    public void registraGarcomMesa(Long idGarcom) {
+        this.get().ifPresent(e -> {
+            try {
+                Connection connection = ConnectionFactory.createConnection();
+                String query = "UPDATE `sistema`.`mesas` SET `id_garcom` = ? WHERE `id` = ?";
+                PreparedStatement ps = connection.prepareStatement(query);
+                ps.setLong(1, idGarcom);
+                ps.setLong(2, e.getId());
+                int i = ps.executeUpdate();
+                if (i == 0) {
+                    System.out.println("Erro ao registrar garcom na mesa");
+                } else System.out.println("Garcom registrado na mesa");
+            } catch (SQLException se) {
+                System.out.println(se);
+            }
+        });
+    }
+
     public Optional<MesaDto> findByNumero(Long numeroMesa) {
         try {
             Connection connection = ConnectionFactory.createConnection();

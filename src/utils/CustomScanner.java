@@ -1,7 +1,9 @@
 package utils;
-
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
-
+import java.util.Date;
+import java.util.Scanner;
+import java.text.DateFormat;
 public class CustomScanner {
 
     public String scString(String msg) {
@@ -60,14 +62,20 @@ public class CustomScanner {
         }
     }
 
-    public Short scStringMsgFull(String msg) {
+    public Date scData(String msg) {
+        System.out.println(msg);
         Scanner sc = new Scanner(System.in);
         try {
-            System.out.println(msg);
-            return sc.nextShort();
+
+            System.out.println("Data no formato dd/MM/yyyy");
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            Date dt = df.parse(sc.next());
+
+            return dt;
+
         } catch (Exception e) {
-            System.out.println("Digite um valor valido!!");
-            return this.scStringMsgFull(msg);
+            System.out.println("Digite um numero valido!!");
+            return this.scData(msg);
         }
     }
 }

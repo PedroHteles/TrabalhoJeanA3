@@ -18,7 +18,43 @@ public class GarcomImplDaoImpl extends ConnectionFactory implements GarcomDao {
 
     @Override
     public void create() {
+        String nome = scString("Digite o nome do garcom ou digite SAIR:");
+        if (nome.toLowerCase().equals("sair")) return;
+        String email = scString("Digite o email do garcom:");
+        Optional<Garcom> byEmail = this.findByEmail(email);
+        if (byEmail.isPresent()) {
+            System.out.println("email ja cadastrado");
+        } else {
+            String cpf = scString("Digite o cpf garcom:");
+            Optional<Garcom> byCpf = this.findByCpf(cpf);
+            if (byCpf.isPresent()) {
+                System.out.println("cpf ja cadastrado");
+            } else {
 
+                try {
+
+                    String query = "INSERT INTO sistema.garcoms (nome, cpf,data_nascimento ,email, telefone, sexo, salario) VALUES (?, ?, ?, ?, ?, ?, ?); ";
+                    Connection connection = ConnectionFactory.createConnection();
+                    PreparedStatement ps = connection.prepareStatement(query);
+                    ps.setString(1, nome);
+                    ps.setString(2, cpf);
+                    ps.setDate(3,new java.sql.Date(scData("Digite a data de nascimento do garcom:").getTime()));
+                    ps.setString(4, email);
+                    ps.setLong(5,scLong("Digite o telefone do garcom:"));
+                    ps.setShort(6, Objects.requireNonNull(TipoSexo.getInstance(scShort("digite 1 para masculino e 2 para feminino"))).getValor());
+                    ps.setDouble(7,scDouble("Digite o salario do garcom:"));
+                    int i = ps.executeUpdate();
+                    if (i == 0) {
+                        System.out.println("garcom nao cadastrado verifique!");
+                    } else {
+                        System.out.println("Garcom cadastrado !");
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+        }
     }
 
     @Override
@@ -83,6 +119,37 @@ public class GarcomImplDaoImpl extends ConnectionFactory implements GarcomDao {
         }
     }
 
+
+    public Optional<Garcom> findByEmail(String email) {
+        try {
+            Connection connection = ConnectionFactory.createConnection();
+            String query = "select * from sistema.garcoms where email = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, email);
+            ResultSet resulQuery = ps.executeQuery();
+            while (resulQuery.next()) return Optional.of(resultToObject(resulQuery));
+            return Optional.empty();
+        } catch (SQLException se) {
+            System.out.println(se);
+            return Optional.empty();
+        }
+    }
+
+    public Optional<Garcom> findByCpf(String cpf) {
+        try {
+            Connection connection = ConnectionFactory.createConnection();
+            String query = "select * from sistema.garcoms where cpf = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setString(1, cpf);
+            ResultSet resulQuery = ps.executeQuery();
+            while (resulQuery.next()) return Optional.of(resultToObject(resulQuery));
+            return Optional.empty();
+        } catch (SQLException se) {
+            System.out.println(se);
+            return Optional.empty();
+        }
+    }
+
     @Override
     public Optional<Garcom> get() {
         String emailGarcom = scString("Digite o email do garcom: ");
@@ -93,6 +160,7 @@ public class GarcomImplDaoImpl extends ConnectionFactory implements GarcomDao {
             ps.setString(1, emailGarcom);
             ResultSet resulQuery = ps.executeQuery();
             while (resulQuery.next()) return Optional.of(resultToObject(resulQuery));
+            System.out.println("Garcom nao encontrado");
             return Optional.empty();
         } catch (SQLException se) {
             System.out.println(se);
@@ -103,29 +171,25 @@ public class GarcomImplDaoImpl extends ConnectionFactory implements GarcomDao {
 
     @Override
     public List<Long> getMesas(Long id) {
-            final List<Long> listaIdMesas = new ArrayList<>();
-            try {
-                Connection connection = ConnectionFactory.createConnection();
-                String query = "select m.id from sistema.garcoms g ,sistema.mesas m where g.id = ? and g.id = m.id_garcom";
-                PreparedStatement ps = connection.prepareStatement(query);
-                ps.setLong(1, id);
-                ResultSet resulQuery = ps.executeQuery();
-                while (resulQuery.next()) {
-                    listaIdMesas.add(resulQuery.getLong(1));
-                }
-                if (listaIdMesas.size() == 0) {
-                    System.out.println("Nenhuma mesa nao encontrada\n");
-                    return new ArrayList<>();
-                } else return listaIdMesas;
-
-            } catch (SQLException se) {
-                System.out.println(se);
-                return null;
+        final List<Long> listaIdMesas = new ArrayList<>();
+        try {
+            Connection connection = ConnectionFactory.createConnection();
+            String query = "select m.id from sistema.garcoms g ,sistema.mesas m where g.id = ? and g.id = m.id_garcom";
+            PreparedStatement ps = connection.prepareStatement(query);
+            ps.setLong(1, id);
+            ResultSet resulQuery = ps.executeQuery();
+            while (resulQuery.next()) {
+                listaIdMesas.add(resulQuery.getLong(1));
             }
-    }
+            if (listaIdMesas.size() == 0) {
+                System.out.println("Garcom nao esta atendendo nenhuma mesa no momento\n");
+                return new ArrayList<>();
+            } else return listaIdMesas;
 
-    @Override
-    public void registraGarcomMesa() {
+        } catch (SQLException se) {
+            System.out.println(se);
+            return null;
+        }
     }
 
     @Override
@@ -144,7 +208,7 @@ public class GarcomImplDaoImpl extends ConnectionFactory implements GarcomDao {
                     listaIdMesas.add(resulQuery.getLong(1));
                 }
                 if (listaIdMesas.size() == 0) {
-                    System.out.println("Nenhuma mesa nao encontrada\n");
+                    System.out.println("Garcom nao esta atendendo nenhuma mesa ocupada\n");
                     return new ArrayList<>();
                 } else return listaIdMesas;
 
@@ -154,32 +218,6 @@ public class GarcomImplDaoImpl extends ConnectionFactory implements GarcomDao {
             }
         } else return new ArrayList<>();
     }
-
-//    @Override
-//    public List<Long> getMesasLivres() {
-//        final List<Long> listaIdMesas = new ArrayList<>();
-//        try {
-//            Connection connection = ConnectionFactory.createConnection();
-//            String query = "select m.id from sistema.mesas m where m.situacao_mesa = ? and m.id_garcom IS NOT NULL";
-//            PreparedStatement ps = connection.prepareStatement(query);
-//            ps.setLong(1, TipoSituacao.LIVRE.getValor());
-//            ResultSet resulQuery = ps.executeQuery();
-//            while (resulQuery.next()) {
-//                listaIdMesas.add(resulQuery.getLong(1));
-//            }
-//            if (listaIdMesas.size() == 0) {
-//                System.out.println("Nenhuma mesa nao encontrada\n");
-//                return new ArrayList<>();
-//            } else return listaIdMesas;
-//
-//        } catch (SQLException se) {
-//            System.out.println(se);
-//            return null;
-//
-//        }
-//    }
-
-
 
     @Override
     public List<MesaDto> getMesasQuantidade() {
