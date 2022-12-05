@@ -3,11 +3,8 @@ package service;
 import model.Garcom;
 import model.Mesa;
 import model.MesaDto;
-import repository.GarcomDao;
-import repository.MesaDao;
 import repository.imp.GarcomImplDaoImpl;
 import repository.imp.MesaImplDaoImpl;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +13,14 @@ public class ServiceImpl implements Service {
 
     private final MesaImplDaoImpl  mesaImplDaoImpl = new MesaImplDaoImpl();
     private final GarcomImplDaoImpl garcomImplDaoImpl = new GarcomImplDaoImpl();
+    public MesaImplDaoImpl serviceMesa(){
+        return mesaImplDaoImpl;
+    }
+
+    public GarcomImplDaoImpl serviceGarcom(){
+        return garcomImplDaoImpl;
+    }
+
 
     @Override
     public Optional<Mesa> getMesa(Long id) {

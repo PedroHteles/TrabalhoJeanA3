@@ -2,7 +2,6 @@ package repository;
 
 import model.Garcom;
 import model.MesaDto;
-
 import java.util.List;
 
 public interface GarcomDao extends Dao<Garcom> {

@@ -5,10 +5,8 @@ import constate.TipoSituacao;
 import dB.ConnectionFactory;
 import model.Garcom;
 
-import model.Mesa;
 import model.MesaDto;
 import repository.GarcomDao;
-import utils.CustomScanner;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

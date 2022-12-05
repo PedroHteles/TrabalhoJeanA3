@@ -28,9 +28,7 @@ public class Menu {
                         + "0. Sair:\n\n";
 
         System.out.println(menu);
-        MesaImplDaoImpl mesaImplDao = new MesaImplDaoImpl();
         ServiceImpl service = new ServiceImpl();
-        GarcomImplDaoImpl garcomImplDaoImpl = new GarcomImplDaoImpl();
         CustomScanner sc = new CustomScanner();
         int opcao = sc.scInt("Digite uma opcao:");
 
@@ -38,13 +36,13 @@ public class Menu {
             switch (opcao) {
                 case 1 -> {
                     service.getMesas().forEach(Menu::soutMesa);
-                    mesaImplDao.create();
+                    service.serviceMesa().create();
                 }
-                case 2 -> mesaImplDao.get().ifPresent(e -> {
+                case 2 ->service.serviceMesa().get().ifPresent(e -> {
                     service.getMesa(e.getId()).ifPresent(Menu::soutMesa);
                 });
 
-                case 3 -> mesaImplDao.delete();
+                case 3 -> service.serviceMesa().delete();
 //
 //                case 4 -> garcomImplDaoImpl.getMesasOcupadas().forEach(e -> {
 //                    service.getMesa(e).ifPresent(Menu::soutMesa);
@@ -52,19 +50,19 @@ public class Menu {
 //
                 case 5 -> service.getGarcom().ifPresent(Menu::soutGarcom);
 //
-                case 6 -> garcomImplDaoImpl.delete();
+                case 6 -> service.serviceGarcom().delete();
 //
 //                case 7 -> {
 //                    garcomImplDao.buscarPeloEmail().ifPresent(garcomImplDao::registraGarcomMesa);
 //                    mesaImplDao.getAll().forEach(Menu::soutMesa);
 //                }
-//                case 8 -> mesaImplDao.update();
+                case 8 -> service.serviceMesa().removerGarcom();
 //
-                case 9 -> garcomImplDaoImpl.getMesasOcupadas().forEach(e -> {
+                case 9 -> service.serviceGarcom().getMesasOcupadas().forEach(e -> {
                     service.getMesa(e).ifPresent(Menu::soutMesa);
                 });
 //
-                case 10 -> mesaImplDao.get().ifPresent(e -> service.getMesa(e.getId()).ifPresent(mesa -> {
+                case 10 -> service.serviceMesa().get().ifPresent(e -> service.getMesa(e.getId()).ifPresent(mesa -> {
                     if(mesa.getGarcom() != null){
                         System.out.println("Garcom responsavel pela mesa " + mesa.getNumeroMesa() + ": " + mesa.getGarcom().getNome());
                     }else{
@@ -74,7 +72,7 @@ public class Menu {
 //
 //                case 11 -> mesaImplDao.getMesasCapacidade().forEach(Menu::soutMesa);
 //
-                case 12 -> mesaImplDao.getMesasLivres().forEach(e -> {
+                case 12 -> service.serviceMesa().getMesasLivres().forEach(e -> {
                     service.getMesa(e).ifPresent(Menu::soutMesa);
                 });
 //

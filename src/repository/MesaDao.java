@@ -1,7 +1,6 @@
 package repository;
 
 import constate.TipoSituacao;
-import model.Mesa;
 import model.MesaDto;
 
 import java.util.List;
@@ -16,6 +15,7 @@ public interface MesaDao extends Dao<MesaDto> {
     List<MesaDto> getMesasSituacao();
     List<MesaDto> getMesasOcupadas();
     List<Long> getMesasLivres();
+    void removerGarcom();
 
 
 }

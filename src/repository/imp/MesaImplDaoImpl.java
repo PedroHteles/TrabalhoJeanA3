@@ -2,10 +2,8 @@ package repository.imp;
 
 import constate.TipoSituacao;
 import dB.ConnectionFactory;
-import model.Mesa;
 import model.MesaDto;
 import repository.MesaDao;
-import utils.CustomScanner;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -246,6 +244,24 @@ public class MesaImplDaoImpl extends ConnectionFactory implements MesaDao {
             System.out.println(se);
             return new ArrayList<>();
         }
+    }
+
+    @Override
+    public void removerGarcom() {
+        this.get().ifPresent(e -> {
+            try {
+                Connection connection = ConnectionFactory.createConnection();
+                String query = "UPDATE `sistema`.`mesas` SET `id_garcom` = NULL WHERE `id` = ?";
+                PreparedStatement ps = connection.prepareStatement(query);
+                ps.setLong(1, e.getId());
+                int i = ps.executeUpdate();
+                if (i == 0) {
+                    System.out.println("Erro ao remover garcom da mesa");
+                } else System.out.println("Garcom removido com sucesso");
+            } catch (SQLException se) {
+                System.out.println(se);
+            }
+        });
     }
 
     public Optional<MesaDto> findByNumero(Long numeroMesa) {
