@@ -199,7 +199,7 @@ public class GarcomImplDaoImpl extends ConnectionFactory implements GarcomDao {
             final List<Long> listaIdMesas = new ArrayList<>();
             try {
                 Connection connection = ConnectionFactory.createConnection();
-                String query = "select m.id from sistema.garcoms g ,sistema.mesas m where g.id = ? and g.id = m.id_garcom and m.situacao_mesa = ?";
+                String query = "select m.id from sistema.garcoms g ,sistema.mesas m where g.id = ? and g.id = m.id_garcom and m.situacao = ?";
                 PreparedStatement ps = connection.prepareStatement(query);
                 ps.setLong(1, garcom.get().getId());
                 ps.setLong(2, TipoSituacao.OCUPADA.getValor());

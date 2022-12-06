@@ -23,7 +23,7 @@ public class MesaImplDaoImpl extends ConnectionFactory implements MesaDao {
                 Short situacao = scShort("Digite 1 para LIVRE, Digite 2 para OCUPADA, digite 3 para RESERVADA: ");
                 if (situacao >= 1 && situacao <= 3) {
                     Connection connection = ConnectionFactory.createConnection();
-                    String query = "INSERT INTO `sistema`.`mesas` (`numero_mesa`, `capacidade_mesa`,`situacao_mesa`) VALUES (?, ?,?);";
+                    String query = "INSERT INTO `sistema`.`mesas` (`numero`, `capacidade`,`situacao`) VALUES (?, ?,?);";
                     PreparedStatement ps = connection.prepareStatement(query);
                     ps.setLong(1, numeroMesa);
                     ps.setLong(2, capacidade);
@@ -114,7 +114,7 @@ public class MesaImplDaoImpl extends ConnectionFactory implements MesaDao {
             Connection connection = ConnectionFactory.createConnection();
             Long numeroMesa = scLong("Digite o numero da mesa ou digite 0 para voltar ao menu:");
             if (numeroMesa == 0) return Optional.empty();
-            String query = "select * from sistema.mesas where numero_mesa = ?";
+            String query = "select * from sistema.mesas where numero = ?";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setLong(1, numeroMesa);
             ResultSet resulQuery = ps.executeQuery();
@@ -156,7 +156,7 @@ public class MesaImplDaoImpl extends ConnectionFactory implements MesaDao {
         final ArrayList<MesaDto> Mesas = new ArrayList<>();
         try {
             Connection connection = ConnectionFactory.createConnection();
-            String query = "select * from sistema.mesas where capacidade_mesa = ?";
+            String query = "select * from sistema.mesas where capacidade = ?";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setLong(1, capacidadeMinima);
             ResultSet resulQuery = ps.executeQuery();
@@ -229,7 +229,7 @@ public class MesaImplDaoImpl extends ConnectionFactory implements MesaDao {
         final List<Long> listaIdMesas = new ArrayList<>();
         try {
             Connection connection = ConnectionFactory.createConnection();
-            String query = "select m.id from sistema.mesas m where m.situacao_mesa = ? and m.id_garcom IS NOT NULL";
+            String query = "select m.id from sistema.mesas m where m.situacao = ? and m.id_garcom IS NOT NULL";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setLong(1, TipoSituacao.LIVRE.getValor());
             ResultSet resulQuery = ps.executeQuery();
@@ -283,11 +283,35 @@ public class MesaImplDaoImpl extends ConnectionFactory implements MesaDao {
         });
     }
 
+    @Override
+    public void atualizaStatusMesa() {
+        this.get().ifPresent(e ->{
+            Short situacao = scShort("Digite 1 para LIVRE, Digite 2 para OCUPADA, digite 3 para RESERVADA: ");
+            if (!(situacao >= 1 && situacao <= 3)) {
+                System.out.println("Valor invalido!! ");
+            }else{
+                try {
+                    Connection connection = ConnectionFactory.createConnection();
+                    String query = "UPDATE `sistema`.`mesas` SET `situacao` = ? WHERE `id` = ?";
+                    PreparedStatement ps = connection.prepareStatement(query);
+                    ps.setLong(1, situacao);
+                    ps.setLong(2, e.getId());
+                    int i = ps.executeUpdate();
+                    if (i == 0) {
+                        System.out.println("Erro atualizar status mesa");
+                    } else System.out.println("Status mesa atualizado");
+                } catch (SQLException se) {
+                    System.out.println(se);
+                }
+            }
+        });
+    }
+
     public Optional<MesaDto> findByNumero(Long numeroMesa) {
         try {
             Connection connection = ConnectionFactory.createConnection();
             if (numeroMesa == 0) return Optional.empty();
-            String query = "select * from sistema.mesas where numero_mesa = ?";
+            String query = "select * from sistema.mesas where numero = ?";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setLong(1, numeroMesa);
             ResultSet resulQuery = ps.executeQuery();

@@ -18,5 +18,7 @@ public interface MesaDao extends Dao<MesaDto> {
     void removerGarcom();
     void registraGarcomMesa(Long id);
 
+    void atualizaStatusMesa();
+
 
 }

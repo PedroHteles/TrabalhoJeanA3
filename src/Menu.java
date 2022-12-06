@@ -1,12 +1,7 @@
 import model.Garcom;
 import model.Mesa;
-import repository.imp.GarcomImplDaoImpl;
-import repository.imp.MesaImplDaoImpl;
 import service.ServiceImpl;
 import utils.CustomScanner;
-
-import java.util.Optional;
-
 
 public class Menu {
 
@@ -25,6 +20,7 @@ public class Menu {
                         + "11.Relatório com todas as mesas que um garçom atende:\n"
                         + "12.Relatório com todas as mesas livres e o nome do garçom responsável pela mesa:\n"
                         + "13.Relatório da quantidade de mesas que cada garçom está atendendo:\n"
+                        + "14.Atualiza status mesa:\n"
                         + "0. Sair:\n\n";
 
         System.out.println(menu);
@@ -65,6 +61,7 @@ public class Menu {
                                     "total de mesas atendidas no momento: " + e.getListaMesas().size() + "\n"
                     );
                 });
+                case 14 -> service.serviceMesa().atualizaStatusMesa();
             }
             System.out.println(menu);
             opcao = sc.scInt("Digite uma opcao: ");
