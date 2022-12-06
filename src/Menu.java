@@ -20,10 +20,10 @@ public class Menu {
                         + "6. Remocao de garcom:\n"
                         + "7. Registra garcom mesa:\n"
                         + "8. Remove garcom mesa:\n"
-                        + "9. Relatório com todas as mesas que um garçom atende e que estão ocupadas :\n"
-                        + "10.Busca nome do garçom responsável por uma dada mesa :\n"
+                        + "9. Relatório com todas as mesas que um garçom atende e que estão ocupadas:\n"
+                        + "10.Busca nome do garçom responsável por uma dada mesa:\n"
                         + "11.Relatório com todas as mesas que um garçom atende:\n"
-                        + "12.Relatório com todas as mesas livres e o nome do garçom responsável pela mesa :\n"
+                        + "12.Relatório com todas as mesas livres e o nome do garçom responsável pela mesa:\n"
                         + "13.Relatório da quantidade de mesas que cada garçom está atendendo:\n"
                         + "0. Sair:\n\n";
 
@@ -38,17 +38,14 @@ public class Menu {
                     service.getMesas().forEach(Menu::soutMesa);
                     service.serviceMesa().create();
                 }
-                case 2 ->
-                        service.serviceMesa().get().ifPresent(e -> service.getMesa(e.getId()).ifPresent(Menu::soutMesa));
+                case 2 -> service.serviceMesa().get().ifPresent(e -> service.getMesa(e.getId()).ifPresent(Menu::soutMesa));
                 case 3 -> service.serviceMesa().delete();
                 case 4 -> service.serviceGarcom().create();
                 case 5 -> service.getGarcom().ifPresent(Menu::soutGarcom);
                 case 6 -> service.serviceGarcom().delete();
-                case 7 ->
-                        service.serviceGarcom().get().ifPresent(e -> service.serviceMesa().registraGarcomMesa(e.getId()));
+                case 7 -> service.serviceGarcom().get().ifPresent(e -> service.serviceMesa().registraGarcomMesa(e.getId()));
                 case 8 -> service.serviceMesa().removerGarcom();
-                case 9 ->
-                        service.serviceGarcom().getMesasOcupadas().forEach(e -> service.getMesa(e).ifPresent(Menu::soutMesa));
+                case 9 -> service.serviceGarcom().getMesasOcupadas().forEach(e -> service.getMesa(e).ifPresent(Menu::soutMesa));
                 case 10 -> service.serviceMesa().get().ifPresent(e -> service.getMesa(e.getId()).ifPresent(mesa -> {
                     if (mesa.getGarcom() != null) {
                         System.out.println("Garcom responsavel pela mesa " + mesa.getNumeroMesa() + ": " + mesa.getGarcom().getNome());
@@ -98,7 +95,6 @@ public class Menu {
     }
 }
 
-//}
 
 
 
